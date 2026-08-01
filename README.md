@@ -1,9 +1,7 @@
-<h1>
-  <img src="Images/uber_logo.png" alt="Uber Logo" width="40" style="vertical-align: -1px;">
-  Uber Ride Booking Analytics & Operations
-</h1>
 
+<img src="Images/uber_logo.png" alt="Uber Logo" width="40" style="vertical-align: -1px;"> Uber Ride Booking Analytics & Operations
 
+---
 
 ## 📈 Project Overview
 
@@ -43,6 +41,8 @@
 - **Time Period    :**   2024
 - **Granularity    :**   One row represents one ride booking.
 
+---
+
 ## 📈 Features Included
 
 - Booking Details
@@ -59,3 +59,5 @@
 ## Dataset Disclaimer
 
 - This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered    official Uber operational data.
+
+---
