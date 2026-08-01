@@ -1,5 +1,5 @@
 <h1>
-  <img src="Images/uber_logo.png" alt="Uber Logo" width="45" style="vertical-align: -5px;">
+  <img src="Images/uber_logo.png" alt="Uber Logo" width="45" style="vertical-align: -3px;">
   Uber Ride Booking Analytics & Operations
 </h1>
 
