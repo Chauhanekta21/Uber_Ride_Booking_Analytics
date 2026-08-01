@@ -1,5 +1,5 @@
 
-# <img src="Images/uber_logo.png" alt="Uber Logo" width="35"> Uber Ride-Sharing Analytics
+## <img src="Images/uber_logo.png" alt="Uber Logo" width="35"> Uber Ride Booking Analytics & Operations
 
 
 ## 📈 Project Overview
