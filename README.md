@@ -3,7 +3,7 @@
 
 
 <h1>
-  <img src="Images/uber_logo.png" width="40" alt="Uber Logo" style="vertical-align: middle;">
+  <img src="Images/uber_logo.png" width="40" alt="Uber Logo" style="vertical-align: -1px;">
   Uber Ride-Sharing Analytics
 </h1>
 
