@@ -1,8 +1,5 @@
 
-<h1><img src="Images/uber_logo.png" width="30" alt="Uber Logo"> Uber Ride Booking Analytics & Operations</h1>
-
-
-## <img src="Images/uber_logo.png" alt="Uber Logo" width="35"> Uber Ride Booking Analytics & Operations
+<h1><img src="Images/uber_logo.png" width="35" alt="Uber Logo"> Uber Ride Booking Analytics & Operations</h1>
 
 
 ## 📈 Project Overview
@@ -15,13 +12,19 @@
 
 ## 📈 Objectives
 
-- Analyze booking patterns by month, day, and hour.
-- Evaluate driver and customer performance using ratings.
-- Identify revenue patterns across vehicle types and locations.
-- Analyze ride cancellations and their reasons.
-- Examine payment method preferences.
-- Measure operational efficiency using pickup and trip time metrics.
-- Generate business insights using advanced SQL queries.
+🔹 Analyze booking patterns by month, day, and hour.
+
+🔹 Evaluate driver and customer performance using ratings.
+
+🔹 Identify revenue patterns across vehicle types and locations.
+
+🔹 Analyze ride cancellations and their reasons.
+
+🔹 Examine payment method preferences.
+
+🔹 Measure operational efficiency using pickup and trip time metrics.
+
+🔹 Generate business insights using advanced SQL queries.
 
 ---
 
