@@ -1,9 +1,9 @@
 
-<h1><img src="Images/uber_logo.png" width="35" alt="Uber Logo"> Uber Ride Booking Analytics & Operations</h1>
+<h1><img src="Images/uber_logo.png" width="40" alt="Uber Logo"> Uber Ride Booking Analytics & Operations</h1>
 
 
 <h1>
-  <img src="assets/uber_logo.png" width="35" alt="Uber Logo" style="vertical-align: middle;">
+  <img src="Images/uber_logo.png" width="40" alt="Uber Logo" style="vertical-align: middle;">
   Uber Ride-Sharing Analytics
 </h1>
 
