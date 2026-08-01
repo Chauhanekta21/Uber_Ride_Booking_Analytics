@@ -2,6 +2,12 @@
 <h1><img src="Images/uber_logo.png" width="35" alt="Uber Logo"> Uber Ride Booking Analytics & Operations</h1>
 
 
+<h1>
+  <img src="assets/uber_logo.png" width="35" alt="Uber Logo" style="vertical-align: middle;">
+  Uber Ride-Sharing Analytics
+</h1>
+
+
 ## 📈 Project Overview
 
 🔹 This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
