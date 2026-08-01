@@ -1,13 +1,14 @@
 <h1>
   <img src="Images/uber_logo.png" alt="Uber Logo" width="40">
-  ## Uber Ride Booking Analytics & Operations
+  Uber Ride Booking Analytics & Operations
 </h1>
 
 
 
 ## 📈 Project Overview
 
-This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency. The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
+- This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver performance,    revenue, booking trends, cancellations, payment preferences, and operational efficiency.
+- The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
 
 ---
 
@@ -25,22 +26,22 @@ This project analyzes Uber ride booking data to uncover actionable business insi
 
 ## 📈 Tech Stack
 
-- **Database:** PostgreSQL
-- **Query Language:** SQL
-- **Programming Language:** Python
-- **Libraries:** Pandas, SQLAlchemy, Plotly, Seaborn, Streamlit
+- **Database               :**  PostgreSQL
+- **Query Language         :**  SQL
+- **Programming Language   :**  Python
+- **Libraries              :**  Pandas, SQLAlchemy, Plotly, Seaborn, Streamlit
 - **IDE:** VS Code
-- **Version Control:** Git & GitHub
+- **Version Control        :**  Git & GitHub
 
 ---
 
 ## 📈 Dataset Information
 
-- **Dataset:** Uber Ride Analytics Dataset (2024)
-- **Source:** Kaggle
-- **Total Records:** 150,000
-- **Time Period:** 2024
-- **Granularity:** One row represents one ride booking.
+- **Dataset        :**   Uber Ride Analytics Dataset (2024)
+- **Source         :**   Kaggle
+- **Total Records  :**   150,000
+- **Time Period    :**   2024
+- **Granularity    :**   One row represents one ride booking.
 
 ## 📈 Features Included
 
@@ -57,4 +58,4 @@ This project analyzes Uber ride booking data to uncover actionable business insi
 
 ## Dataset Disclaimer
 
-- This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered official Uber operational data.
+- This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered    official Uber operational data.
