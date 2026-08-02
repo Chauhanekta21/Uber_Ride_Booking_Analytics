@@ -4,7 +4,7 @@
 
 ## 📈 Project Overview
 
-🔹 This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
+- This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                 performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
 
 🔹 The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
 
