@@ -2,6 +2,10 @@
 ## 📊 Uber Ride Booking Analytics & Operations
 
 
+![Data Model](Images/uber_thumbnail2.png)
+
+---
+
 ## 📈 Project Overview
 
 - This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                 performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
