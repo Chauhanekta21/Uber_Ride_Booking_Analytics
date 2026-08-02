@@ -1,36 +1,41 @@
-<h1>
-  <img src="Images/uber_logo.png" alt="Uber Logo" width="40">
-  ## Uber Ride Booking Analytics & Operations
-</h1>
 
+<h1><img src="Images/uber_logo.png" width="35" alt="Uber Logo"> Uber Ride Booking Analytics & Operations</h1>
 
 
 ## 📈 Project Overview
 
-This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency. The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
+🔹 This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
+
+🔹 The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
 
 ---
 
 ## 📈 Objectives
 
-- Analyze booking patterns by month, day, and hour.
-- Evaluate driver and customer performance using ratings.
-- Identify revenue patterns across vehicle types and locations.
-- Analyze ride cancellations and their reasons.
-- Examine payment method preferences.
-- Measure operational efficiency using pickup and trip time metrics.
-- Generate business insights using advanced SQL queries.
+🔹 Analyze booking patterns by month, day, and hour.
+
+🔹 Evaluate driver and customer performance using ratings.
+
+🔹 Identify revenue patterns across vehicle types and locations.
+
+🔹 Analyze ride cancellations and their reasons.
+
+🔹 Examine payment method preferences.
+
+🔹 Measure operational efficiency using pickup and trip time metrics.
+
+🔹 Generate business insights using advanced SQL queries.
 
 ---
 
 ## 📈 Tech Stack
 
-- **Database:** PostgreSQL
-- **Query Language:** SQL
-- **Programming Language:** Python
-- **Libraries:** Pandas, SQLAlchemy, Plotly, Seaborn, Streamlit
+- **Database               :**  PostgreSQL
+- **Query Language         :**  SQL
+- **Programming Language   :**  Python
+- **Libraries              :**  Pandas, SQLAlchemy, Plotly, Seaborn, Streamlit
 - **IDE:** VS Code
-- **Version Control:** Git & GitHub
+- **Version Control        :**  Git & GitHub
 
 ---
 
@@ -46,6 +51,9 @@ This project analyzes Uber ride booking data to uncover actionable business insi
 - **Time Period:** 2024
 - **Location:** Delhi NCR (National Capital Region), India
 - **Granularity:** One row represents one ride booking.
+
+---
+
 
 ### 🔹 Features Included
 
@@ -136,4 +144,6 @@ Confirmed the dataset contains 150,000 records and 21 columns.
 
 ## Dataset Disclaimer
 
-- This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered official Uber operational data.
+- This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered    official Uber operational data.
+
+---
