@@ -2,7 +2,7 @@
 ## 📊 Uber Ride Booking Analytics & Operations
 
 
-![Data Model](Images/uber_thumbnail3.png)
+![Data Model](Images/uber_thumbnail.png)
 
 ---
 
