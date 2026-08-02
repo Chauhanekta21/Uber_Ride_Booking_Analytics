@@ -6,25 +6,25 @@
 
 - This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                 performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
 
-🔹 The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
+- The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
 
 ---
 
 ## 📈 Objectives
 
-🔹 Analyze booking patterns by month, day, and hour.
+- Analyze booking patterns by month, day, and hour.
 
-🔹 Evaluate driver and customer performance using ratings.
+- Evaluate driver and customer performance using ratings.
 
-🔹 Identify revenue patterns across vehicle types and locations.
+- Identify revenue patterns across vehicle types and locations.
 
-🔹 Analyze ride cancellations and their reasons.
+- Analyze ride cancellations and their reasons.
 
-🔹 Examine payment method preferences.
+- Examine payment method preferences.
 
-🔹 Measure operational efficiency using pickup and trip time metrics.
+- Measure operational efficiency using pickup and trip time metrics.
 
-🔹 Generate business insights using advanced SQL queries.
+- Generate business insights using advanced SQL queries.
 
 ---
 
@@ -41,7 +41,7 @@
 
 ## 📈 Dataset Overview
 
-This section provides an overview of the dataset, including its   source, structure, scope, and key features used for analysis
+- This section provides an overview of the dataset, including its   source, structure, scope, and key features used for analysis
 
 ### 🔹 Dataset Information
 
@@ -105,15 +105,15 @@ Project Deployment
 
 ## 📈 PostgreSQL Database Setup
 
-🔹 Created a PostgreSQL database named **`uber_ride_booking_db`** to store and manage the Uber Ride Booking dataset for SQL-based data      analysis.
+- Created a PostgreSQL database named **`uber_ride_booking_db`** to store and manage the Uber Ride Booking dataset for SQL-based data       analysis.
 
 ---
 
 ## 📈 Raw Data Import
 
-🔹 Imported the raw CSV dataset into the **`raw_uber_bookings`** table using pgAdmin's Import/Export tool. The table contains all           original dataset features without modification. 
+- Imported the raw CSV dataset into the **`raw_uber_bookings`** table using pgAdmin's Import/Export tool. The table contains all            original dataset features without modification. 
 
-🔹 During import, `"null"` string values were mapped to SQL `NULL` values to ensure proper data type handling and prevent import errors.
+- During import, `"null"` string values were mapped to SQL `NULL` values to ensure proper data type handling and prevent import errors.
 
 
 ---
@@ -123,20 +123,20 @@ Project Deployment
 
 The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or transformation.
 
-🔹 Verified the dataset was successfully imported into PostgreSQL.
-   Confirmed the dataset contains 150,000 records and 21 columns.
+- Verified the dataset was successfully imported into PostgreSQL.
+  Confirmed the dataset contains 150,000 records and 21 columns.
 
-🔹 Reviewed the data type of each column to ensure values were stored correctly.
+- Reviewed the data type of each column to ensure values were stored correctly.
 
-🔹 Checked for missing (NULL) values across all columns.
+- Checked for missing (NULL) values across all columns.
 
-🔹 Identified expected missing values in columns related to cancellations, incomplete rides, ratings, ride distance, booking value, and     payment method.
+- Identified expected missing values in columns related to cancellations, incomplete rides, ratings, ride distance, booking value, and      payment method.
 
-🔹 Checked all text columns for blank ('') values and confirmed that no blank values were present.
+- Checked all text columns for blank ('') values and confirmed that no blank values were present.
 
-🔹 Checked for duplicate booking_id values and found 1,233 repeated booking IDs.
+- Checked for duplicate booking_id values and found 1,233 repeated booking IDs.
 
-🔹 Verified that no exact duplicate rows exist when considering all columns.
+- Verified that no exact duplicate rows exist when considering all columns.
 
 
 ---
