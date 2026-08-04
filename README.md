@@ -2,7 +2,7 @@
 ## 📊 Uber Ride Booking Analytics & Operations
 
 
-![Data Model](Images/uber_thumbnail.png)
+![Data Model](Images/uber_thumbnail3.png)
 
 ---
 
@@ -144,6 +144,11 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 
 ---
+
+## 📈 Data Cleaning
+
+
+
 
 
 ## Dataset Disclaimer
