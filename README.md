@@ -125,9 +125,10 @@ Project Deployment
 
 ## 📈 Data Inspection
 
-The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or               transformation.
+- The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or               transformation.
 
-- **Dataset Structure:** Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                fields were stored appropriately.
+🔹 **Dataset Structure:** 
+- Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                 fields were stored appropriately.
 
 - **Categorical Values:** Inspected unique values across booking statuses, pickup/drop-off locations, and cancellation/incomplete ride                             reasons. The dataset contains 5 unique booking statuses and 176 unique pickup/drop-off locations, along with                              distinct reason categories for cancelled & incomplete rides.
 
@@ -147,7 +148,7 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 ## 📈 Data Cleaning
 
-- **Created Clean Table:** Created clean_uber_bookings as a duplicate of raw_uber_bookings to preserve the original dataset. All further cleaning, transformations, and analysis will be performed using the clean table, while keeping the raw data unchanged for reference.
+- **Created Clean Table:** Created clean_uber_bookings as a duplicate of raw_uber_bookings to preserve the original dataset. All further                             cleaning, transformations, and analysis will be performed using the clean table, while keeping the raw data                               unchanged for reference.
 
 ---
 
