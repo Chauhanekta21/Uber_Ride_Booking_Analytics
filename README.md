@@ -125,25 +125,23 @@ Project Deployment
 
 ## 📈 Data Inspection
 
-- The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or               transformation.
+The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or               transformation.
 
-🔹 **Dataset Structure:** 
-   
-    Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                 fields were stored appropriately.
+- **Dataset Structure:** Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                fields were stored appropriately.
 
-- **Categorical Values:** Inspected unique values across booking statuses, pickup/drop-off locations, and cancellation/incomplete ride                             reasons. The dataset contains 5 unique booking statuses and 176 unique pickup/drop-off locations, along with                              distinct reason categories for cancelled & incomplete rides.
+- **Categorical Values:** Inspected unique values across booking statuses, pickup/drop-off locations, and cancellation/incomplete ride                              reasons. The dataset contains 5 unique booking statuses and 176 unique pickup/drop-off locations, along with                              distinct reason categories for cancelled & incomplete rides.
 
-- **Geographic Coverage:** The locations show that the dataset primarily represents Delhi–NCR ride activity, covering Delhi, Gurugram,                              Noida, Ghaziabad, Faridabad, Greater Noida, and nearby areas such as Meerut, Sonipat, Panipat, Bhiwadi, and                               Bahadurgarh. This indicates that the dataset is regional rather than nationwide.
+- **Geographic Coverage:** The locations show that the dataset primarily represents Delhi–NCR ride activity, covering Delhi, Gurugram,                               Noida, Ghaziabad, Faridabad, Greater Noida, and nearby areas such as Meerut, Sonipat, Panipat, Bhiwadi, and                               Bahadurgarh. This indicates that the dataset is regional rather than nationwide.
 
-- **NULL Values:** Checked all columns and found NULLs mainly in ride metrics, cancellation-related fields, ratings, booking value,                         ride distance, and payment method. These were further validated against booking_status. The NULL patterns                                 consistently matched the ride outcome—for example, cancelled rides naturally have no completed-ride metrics, while                        Completed rides contain the relevant ride values. Therefore, the NULLs are valid and will not be imputed.
+- **NULL Values:** Checked all columns and found NULLs mainly in ride metrics, cancellation-related fields, ratings, booking value,                          ride distance, and payment method. These were further validated against booking_status. The NULL patterns                                 consistently matched the ride outcome—for example, cancelled rides naturally have no completed-ride metrics, while                        Completed rides contain the relevant ride values. Therefore, the NULLs are valid and will not be imputed.
 
 - **Blank Values:** Checked relevant text columns for blank values using TRIM(). No blank values were found.
 
-- **Booking ID Uniqueness:** Of 150,000 records, 148,767 booking IDs are distinct, with 1,233 records associated with repeated IDs.                                   Repeated IDs represent different ride records, so they will be retained and treated as non-unique                                         identifiers.
+- **Booking ID Uniqueness:** Of 150,000 records, 148,767 booking IDs are distinct, with 1,233 records associated with repeated IDs.                                    Repeated IDs represent different ride records, so they will be retained and treated as non-unique                                         identifiers.
 
-- **Customer ID Distribution:** Out of 150,000 records, 148,788 customer IDs were distinct, resulting in 1,212 additional records from                                   repeated customer IDs. Investigation confirmed that these represent customers making multiple bookings,                                   which is expected and does not indicate duplicate records.
+- **Customer ID Distribution:** Out of 150,000 records, 148,788 customer IDs were distinct, resulting in 1,212 additional records from                                    repeated customer IDs. Investigation confirmed that these represent customers making multiple bookings,                                   which is expected and does not indicate duplicate records.
 
-- **Binary Ride Indicators:** Inspected incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver. All three contain                                only 1 and NULL — 1 indicates the event occurred, while NULL indicates it did not. During cleaning, NULLs                                 will be converted to 0, and these columns along with incomplete_rides_reason will be renamed to singular                                  form to match the dataset’s one-row-per-ride-record granularity.
+- **Binary Ride Indicators:** Inspected incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver. All three contain                                 only 1 and NULL — 1 indicates the event occurred, while NULL indicates it did not. During cleaning, NULLs                                 will be converted to 0, and these columns along with incomplete_rides_reason will be renamed to singular                                  form to match the dataset’s one-row-per-ride-record granularity.
 
 ---
 
