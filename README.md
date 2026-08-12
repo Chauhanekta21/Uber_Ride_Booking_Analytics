@@ -3,7 +3,7 @@
 
 
 ![Data Model](Images/thumbnail.png)
-![Data Model](Images/thumbnail1.png)
+
 
 ---
 
