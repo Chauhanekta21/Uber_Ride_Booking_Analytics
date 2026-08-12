@@ -128,7 +128,7 @@ Project Deployment
 - The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or               transformation.
 
 🔹 **Dataset Structure:** 
- - Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                 fields were stored appropriately.
+   Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                 fields were stored appropriately.
 
 - **Categorical Values:** Inspected unique values across booking statuses, pickup/drop-off locations, and cancellation/incomplete ride                             reasons. The dataset contains 5 unique booking statuses and 176 unique pickup/drop-off locations, along with                              distinct reason categories for cancelled & incomplete rides.
 
