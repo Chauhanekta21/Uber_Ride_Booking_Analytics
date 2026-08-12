@@ -127,22 +127,21 @@ Project Deployment
 
 The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or transformation.
 
-The raw dataset was inspected to understand its structure, data quality, consistency, and categorical values before performing any cleaning or transformation.
+- **Dataset Structure:** Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the fields were stored appropriately.
 
-Step 01 — Dataset Preview: Previewed the raw dataset to verify that the imported records and columns were accessible in PostgreSQL.
-Step 02 — Record Count: Confirmed the dataset contains 150,000 records and 21 columns.
-Step 03 — Table Structure: Reviewed the table structure and column metadata of raw_uber_bookings.
-Step 04 — Data Types: Reviewed the data type of each column to ensure values were stored appropriately.
-Step 05 — Categorical Values: Inspected distinct values across booking_status, pickup/drop-off locations, customer cancellation reasons, driver cancellation reasons, and incomplete ride reasons to understand the categories present in the dataset.
-Step 06 — NULL Values: Checked all columns for missing (NULL) values. Missing values were found mainly in ride metrics, cancellation-related fields, ratings, booking value, ride distance, and payment method.
-Step 07 — NULL Validation: Validated the identified NULL values against booking_status. The results showed that the missing values correspond to expected ride outcomes. Conclusion: all identified NULL values are contextually valid and do not require imputation.
-Step 08 — Blank Values: Checked relevant text columns for blank ('') values using TRIM(). Result: no blank values were found.
-Step 09 — Booking ID Distribution: Compared total records with distinct booking_ids. Out of 150,000 records, 148,767 booking IDs are distinct, resulting in 1,233 additional records associated with repeated booking IDs.
-Step 10 — Repeated Booking IDs: Identified booking IDs appearing more than once and investigated individual examples. Repeated IDs were found to contain different ride details rather than identical records. Conclusion: booking_id is not strictly unique in the dataset, and these records were retained.
-Step 11 — Exact Duplicate Records: Compared all columns to identify completely identical records. Result: 0 exact duplicate records were found.
-Step 12 — Customer ID Distribution: Compared total customer records with distinct customer_ids and identified customers with multiple bookings. Result: 148,788 distinct customers across 150,000 records. Individual customer records were also inspected and confirmed that repeated customer IDs represent multiple bookings rather than duplicate records.
-Step 13 — Binary Ride Indicators: Inspected incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver. Result: the columns contain only 1 or NULL values, confirming that they function as binary ride indicators. These columns will be standardized during the Cleaning stage.
+- **Categorical Values:** Inspected unique values across booking statuses, pickup/drop-off locations, and cancellation/incomplete ride reasons. The dataset contains 5 unique booking statuses and 176 unique pickup/drop-off locations, along with distinct reason categories for cancelled & incomplete rides.
 
+- **Geographic Coverage:** The locations show that the dataset primarily represents Delhi–NCR ride activity, covering Delhi, Gurugram, Noida, Ghaziabad, Faridabad, Greater Noida, and nearby areas such as Meerut, Sonipat, Panipat, Bhiwadi, and Bahadurgarh. This indicates that the dataset is regional rather than nationwide.
+
+- **NULL Values:** Checked all columns and found NULLs mainly in ride metrics, cancellation-related fields, ratings, booking value, ride distance, and payment method. These were further validated against booking_status. The NULL patterns consistently matched the ride outcome—for example, cancelled rides naturally have no completed-ride metrics, while Completed rides contain the relevant ride values. Therefore, the NULLs are valid and will not be imputed.
+
+- **Blank Values:** Checked relevant text columns for blank values using TRIM(). No blank values were found.
+
+- **Booking ID Uniqueness:** Of 150,000 records, 148,767 booking IDs are distinct, with 1,233 records associated with repeated IDs. Repeated IDs represent different ride records, so they will be retained and treated as non-unique identifiers.
+
+- **Customer ID Distribution:** Out of 150,000 records, 148,788 customer IDs were distinct, resulting in 1,212 additional records from repeated customer IDs. Investigation confirmed that these represent customers making multiple bookings, which is expected and does not indicate duplicate records.
+
+- **Binary Ride Indicators:** Inspected incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver. All three contain only 1 and NULL — 1 indicates the event occurred, while NULL indicates it did not. During cleaning, NULLs will be converted to 0, and these columns along with incomplete_rides_reason will be renamed to singular form to match the dataset’s one-row-per-ride-record granularity.
 
 ---
 
