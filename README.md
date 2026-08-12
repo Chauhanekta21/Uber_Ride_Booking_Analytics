@@ -145,8 +145,7 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 
 ![Data Model](Images/inspection.png)
-![Data Model](Images/inspection2.png)
-![Data Model](Images/inspection3.png)
+![Data Model](Images/inspection4.png)
 
 ---
 
