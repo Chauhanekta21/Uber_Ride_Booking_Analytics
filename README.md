@@ -147,7 +147,7 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 ## 📈 Data Cleaning
 
-
+- **Created Clean Table:** Created clean_uber_bookings as a duplicate of raw_uber_bookings to preserve the original dataset. All further cleaning, transformations, and analysis will be performed using the clean table, while keeping the raw data unchanged for reference.
 
 ---
 
