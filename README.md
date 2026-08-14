@@ -1,5 +1,5 @@
 
-## 📊 Uber Ride Booking Analytics & Operations
+# 📊 Uber Ride Booking Analytics & Operations
 
 
 ![Data Model](Images/thumbnail.png)
