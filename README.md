@@ -137,7 +137,7 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 - **NULL Values:** Checked all columns and found NULLs mainly in ride metrics, cancellation-related fields, ratings, booking value,                          ride distance, and payment method. These were further validated against booking_status. The NULL patterns                                 consistently matched the ride outcome—for example, cancelled rides naturally have no completed-ride metrics, while                        Completed rides contain the relevant ride values. Therefore, the NULLs are valid and will not be imputed.
 
-- **Blank Values:** Checked relevant text columns for blank values using TRIM(). No blank values were found.
+- **Blank & Whitespace Check:** Checked relevant text columns for blank values and leading/trailing spaces using TRIM(). No blank values or unwanted spaces were found, so no text cleaning was required.
 
 - **Booking ID Uniqueness:** Of 150,000 records, 148,767 booking IDs are distinct, with 1,233 records associated with repeated IDs.                                    Repeated IDs represent different ride records, so they will be retained and treated as non-unique                                         identifiers.
 

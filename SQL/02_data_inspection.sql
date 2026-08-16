@@ -127,8 +127,24 @@ FROM raw_uber_bookings;
 
 
 
+-- Step 09: Check for leading/trailing spaces in text columns
+SELECT *
+FROM raw_uber_bookings
+WHERE
+    booking_id <> TRIM(booking_id)
+    OR booking_status <> TRIM(booking_status)
+    OR customer_id <> TRIM(customer_id)
+    OR vehicle_type <> TRIM(vehicle_type)
+    OR pickup_location <> TRIM(pickup_location)
+    OR drop_location <> TRIM(drop_location)
+    OR customer_cancellation_reason <> TRIM(customer_cancellation_reason)
+    OR driver_cancellation_reason <> TRIM(driver_cancellation_reason)
+    OR incomplete_rides_reason <> TRIM(incomplete_rides_reason)
+    OR payment_method <> TRIM(payment_method);
 
--- Step 09: Check duplicate records
+
+
+-- Step 10: Check duplicate records
 SELECT COUNT(*) AS total_rows, COUNT(DISTINCT(booking_id)) AS distinct_rows, 
 	   COUNT(*) - COUNT(DISTINCT(booking_id)) AS duplicate_rows
 FROM raw_uber_bookings;
@@ -136,7 +152,7 @@ FROM raw_uber_bookings;
 
 
 
--- STEP 10: Check duplicate booking IDs
+-- STEP 11: Check duplicate booking IDs
 SELECT booking_id, COUNT(*) AS duplicate_count
 FROM raw_uber_bookings
 GROUP BY booking_id
@@ -151,7 +167,7 @@ WHERE booking_id = 'CNR9603232';
 
 
 
--- Step 11: Check for exact duplicate rows
+-- Step 12: Check for exact duplicate rows
 SELECT *,
        COUNT(*) AS duplicate_count
 FROM raw_uber_bookings
@@ -175,13 +191,13 @@ HAVING COUNT(*) > 1;
 
 
 
--- STEP 12: Inspect customer ID uniqueness and repeated customer records
--- Sub-step 12.1: Compare total customer records with distinct customers
+-- STEP 13: Inspect customer ID uniqueness and repeated customer records
+-- Sub-step 13.1: Compare total customer records with distinct customers
 SELECT COUNT(customer_id) AS total_records, COUNT(DISTINCT(customer_id)) AS distint_customer_count,
 	   COUNT(customer_id) - COUNT(DISTINCT(customer_id)) AS duplicate_count
 FROM raw_uber_bookings;
 
--- Sub-step 12.2: Identify customers with multiple bookings
+-- Sub-step 13.2: Identify customers with multiple bookings
 SELECT customer_id, count(*) AS duplicate_count
 FROM raw_uber_bookings
 GROUP BY customer_id
@@ -189,7 +205,7 @@ HAVING COUNT(*) > 1
 ORDER BY COUNT(*) DESC
 LIMIT 30;
 
--- Sub-step 12.3: Inspect an individual customer with multiple bookings
+-- Sub-step 13.3: Inspect an individual customer with multiple bookings
 SELECT *
 FROM raw_uber_bookings
 WHERE customer_id = 'CID6715450';
@@ -197,13 +213,13 @@ WHERE customer_id = 'CID6715450';
 
 
 
--- STEP 13: Inspect binary ride indicator columns
+-- STEP 14: Inspect binary ride indicator columns
 SELECT DISTINCT incomplete_rides, cancelled_rides_by_customer, cancelled_rides_by_driver
 FROM raw_uber_bookings;
 
 
 
--- STEP 14: Check for invalid negative values
+-- STEP 15: Check for invalid negative values
 SELECT *
 FROM raw_uber_bookings
 WHERE avg_vtat < 0
@@ -216,7 +232,7 @@ WHERE avg_vtat < 0
 
 
 
--- STEP 15: Check for statistical outliers using the IQR method
+-- STEP 16: Check for statistical outliers using the IQR method
 
 WITH stats AS (
     SELECT
@@ -280,7 +296,7 @@ FROM outliers;
 
 
 
--- STEP 16: Validate rating and booking value ranges
+-- STEP 17: Validate rating and booking value ranges
 SELECT
     MIN(driver_rating) AS min_driver_rating,
     MAX(driver_rating) AS max_driver_rating,
@@ -293,7 +309,7 @@ FROM raw_uber_bookings;
 
 
 
--- STEP 17: Validate booking values by booking status
+-- STEP 18: Validate booking values by booking status
 SELECT
     booking_status,
     MIN(booking_value) AS min_value,
@@ -307,7 +323,7 @@ ORDER BY booking_status;
 
 
 
--- STEP 18: Inspect high-value bookings
+-- STEP 19: Inspect high-value bookings
 SELECT
     booking_value,
     ride_distance,
