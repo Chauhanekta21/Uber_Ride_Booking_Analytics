@@ -52,6 +52,7 @@ FROM raw_uber_bookings;
 
 
 
+
 -- Step 06: Check missing values
 SELECT
     COUNT(*) AS total_rows,
