@@ -6,13 +6,11 @@ CREATE TABLE IF NOT EXISTS dim_customer(
 	customer_id VARCHAR(50) PRIMARY KEY
 );
 
-
 -- Step 04.2: Populate customer dimension
 INSERT INTO dim_customer(customer_id)
 SELECT DISTINCT customer_id
 FROM clean_uber_bookings
 WHERE customer_id IS NOT NULL;
-
 
 -- Step 04.3: Validate customer dimension
 SELECT COUNT(*) AS total_customers
@@ -21,12 +19,11 @@ FROM dim_customer;
 
 
 
--- Step 04.4 — Create dim_vehicle
+-- Step 04.4 — Create vehicle dimension table
 CREATE TABLE IF NOT EXISTS dim_vehicle(
 	vehicle_id VARCHAR(10) PRIMARY KEY,
 	vehicle_type VARCHAR(50) UNIQUE NOT NULL
 );
-
 
 -- Step 04.5: Generate vehicle IDs and insert vehicle types
 INSERT INTO dim_vehicle(vehicle_id, vehicle_type)
@@ -37,5 +34,38 @@ FROM(
 	WHERE vehicle_type IS NOT NULL
 ) AS vehicles;
 
-SELECT *
-FROM dim_vehicle;
+
+
+
+
+-- Step 04.6: Create location dimension table
+CREATE TABLE IF NOT EXISTS dim_location(
+	location_id VARCHAR(10) PRIMARY KEY,
+	location_name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Step 04.7: Generate location IDs and insert locations
+INSERT INTO dim_location(location_id, location_name)
+SELECT 'L' || LPAD(ROW_NUMBER() OVER (ORDER BY location_name)::TEXT, 3, '0') AS location_id, location_name
+FROM (
+	SELECT pickup_location AS location_name
+	FROM clean_uber_bookings
+	WHERE pickup_location IS NOT NULL
+
+	UNION
+
+	SELECT drop_location AS location_name
+	FROM clean_uber_bookings
+	WHERE drop_location IS NOT NULL
+) AS locations;
+
+
+
+
+
+
+
+
+
+
+
