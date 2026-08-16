@@ -165,6 +165,93 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 ---
 
+## 📈 Data Normalization
+
+**Why Normalization?**
+- The raw dataset was a single wide table with repeated customer, vehicle, location, and reason data. Normalization reduces redundancy,     improves data consistency, and creates clear relationships between entities.
+
+- The data was normalized into 5 tables:
+
+* dim_customer — 1 column
+* dim_vehicle — 2 columns
+* dim_location — 2 columns
+* dim_ride_reason — 3 columns
+* fact_ride_booking — 22 columns
+
+### Normalization Workflow
+
+** 🔹 1. Customer Dimension**
+Created `dim_customer` to store unique customers separately and avoid repeating customer IDs in every ride record.
+
+| Column        | Type        | Constraint |
+| ------------- | ----------- | ---------- |
+| `customer_id` | VARCHAR(50) | PK         |
+
+** 🔹 2. Vehicle Dimension**
+Created `dim_vehicle` to assign a unique ID to each vehicle type and avoid repeating vehicle information.
+
+| Column         | Type        | Constraint       |
+| -------------- | ----------- | ---------------- |
+| `vehicle_id`   | VARCHAR(10) | PK               |
+| `vehicle_type` | VARCHAR(50) | UNIQUE, NOT NULL |
+
+** 🔹 3. Location Dimension**
+Created `dim_location` to store unique pickup/drop-off locations with reusable location IDs.
+
+| Column          | Type         | Constraint       |
+| --------------- | ------------ | ---------------- |
+| `location_id`   | VARCHAR(10)  | PK               |
+| `location_name` | VARCHAR(100) | UNIQUE, NOT NULL |
+
+** 🔹 4. Ride Reason Dimension**
+Created `dim_ride_reason` to centralize customer cancellation, driver cancellation, and incomplete ride reasons.
+
+| Column        | Type         | Constraint |
+| ------------- | ------------ | ---------- |
+| `reason_id`   | VARCHAR(10)  | PK         |
+| `reason_type` | VARCHAR(30)  | NOT NULL   |
+| `reason`      | VARCHAR(100) | NOT NULL   |
+
+** 🔹 5. Ride Booking Fact**
+Created `fact_ride_booking` as the central table containing ride-level metrics and references to the dimension tables. A new `ride_id` was generated because `booking_id` was not unique.
+
+| Column                       | Type        | Constraint |
+| ---------------------------- | ----------- | ---------- |
+| `ride_id`                    | BIGSERIAL   | PK         |
+| `booking_id`                 | VARCHAR(50) | —          |
+| `booking_date`               | DATE        | —          |
+| `booking_time`               | TIME        | —          |
+| `booking_status`             | VARCHAR(30) | —          |
+| `customer_id`                | VARCHAR(50) | FK         |
+| `vehicle_id`                 | VARCHAR(10) | FK         |
+| `pickup_location_id`         | VARCHAR(10) | FK         |
+| `drop_location_id`           | VARCHAR(10) | FK         |
+| `avg_vtat`                   | NUMERIC     | —          |
+| `avg_ctat`                   | NUMERIC     | —          |
+| `cancelled_ride_by_customer` | INTEGER     | —          |
+| `customer_reason_id`         | VARCHAR(10) | FK         |
+| `cancelled_ride_by_driver`   | INTEGER     | —          |
+| `driver_reason_id`           | VARCHAR(10) | FK         |
+| `incomplete_ride`            | INTEGER     | —          |
+| `incomplete_reason_id`       | VARCHAR(10) | FK         |
+| `booking_value`              | NUMERIC     | —          |
+| `ride_distance`              | NUMERIC     | —          |
+| `driver_rating`              | NUMERIC     | —          |
+| `customer_rating`            | NUMERIC     | —          |
+| `payment_method`             | VARCHAR(50) | —          |
+
+### 🔗 Relationship Structure
+
+```text
+dim_customer ───────┐
+dim_vehicle ────────┤
+dim_location ───────┼──→ fact_ride_booking
+dim_ride_reason ────┘
+```
+
+**Validation:** Confirmed **150,000 ride records**, **150,000 unique `ride_id`s**, and **0 missing mandatory dimension mappings** before applying the FK constraints.
+
+
 ## Dataset Disclaimer
 
 - This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered    official Uber operational data.
