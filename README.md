@@ -145,6 +145,10 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 - **Binary Ride Indicators:** Inspected incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver. All three contain                                 only 1 and NULL — 1 indicates the event occurred, while NULL indicates it did not. During cleaning, NULLs                                 will be converted to 0, and these columns along with incomplete_rides_reason will be renamed to singular                                  form to match the dataset’s one-row-per-ride-record granularity.
 
+- **Negative Value Check:** Checked numeric ride metrics, booking value, ride distance, and ratings for negative values. No invalid negative values were found.
+
+- **Outlier Check:** IQR analysis found no outliers in avg_vtat, avg_ctat, or ride_distance. Statistical outliers were found in booking_value (3,435), driver_rating (5,203), and customer_rating (3,257). Both rating columns fall within the expected 3–5 rating scale, so these are valid values. booking_value outliers were reviewed, but without a reliable business rule, they were retained. No outliers were removed.
+
 
 ![Data Model](Images/inspection.png)
 

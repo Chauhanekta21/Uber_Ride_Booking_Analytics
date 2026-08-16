@@ -203,7 +203,118 @@ FROM raw_uber_bookings;
 
 
 
+-- STEP 14: Check for invalid negative values
+SELECT *
+FROM raw_uber_bookings
+WHERE avg_vtat < 0
+   OR avg_ctat < 0
+   OR booking_value < 0
+   OR ride_distance < 0
+   OR driver_rating < 0
+   OR customer_rating < 0;
 
 
 
 
+-- STEP 15: Check for statistical outliers using the IQR method
+
+WITH stats AS (
+    SELECT
+        percentile_cont(0.25) WITHIN GROUP (ORDER BY avg_vtat) AS vtat_q1,
+        percentile_cont(0.75) WITHIN GROUP (ORDER BY avg_vtat) AS vtat_q3,
+
+        percentile_cont(0.25) WITHIN GROUP (ORDER BY avg_ctat) AS ctat_q1,
+        percentile_cont(0.75) WITHIN GROUP (ORDER BY avg_ctat) AS ctat_q3,
+
+        percentile_cont(0.25) WITHIN GROUP (ORDER BY booking_value) AS value_q1,
+        percentile_cont(0.75) WITHIN GROUP (ORDER BY booking_value) AS value_q3,
+
+        percentile_cont(0.25) WITHIN GROUP (ORDER BY ride_distance) AS distance_q1,
+        percentile_cont(0.75) WITHIN GROUP (ORDER BY ride_distance) AS distance_q3,
+
+        percentile_cont(0.25) WITHIN GROUP (ORDER BY driver_rating) AS driver_q1,
+        percentile_cont(0.75) WITHIN GROUP (ORDER BY driver_rating) AS driver_q3,
+
+        percentile_cont(0.25) WITHIN GROUP (ORDER BY customer_rating) AS customer_q1,
+        percentile_cont(0.75) WITHIN GROUP (ORDER BY customer_rating) AS customer_q3
+    FROM raw_uber_bookings
+),
+
+outliers AS (
+    SELECT
+        COUNT(*) FILTER (
+            WHERE avg_vtat < vtat_q1 - 1.5 * (vtat_q3 - vtat_q1)
+               OR avg_vtat > vtat_q3 + 1.5 * (vtat_q3 - vtat_q1)
+        ) AS vtat_outliers,
+
+        COUNT(*) FILTER (
+            WHERE avg_ctat < ctat_q1 - 1.5 * (ctat_q3 - ctat_q1)
+               OR avg_ctat > ctat_q3 + 1.5 * (ctat_q3 - ctat_q1)
+        ) AS ctat_outliers,
+
+        COUNT(*) FILTER (
+            WHERE booking_value < value_q1 - 1.5 * (value_q3 - value_q1)
+               OR booking_value > value_q3 + 1.5 * (value_q3 - value_q1)
+        ) AS booking_value_outliers,
+
+        COUNT(*) FILTER (
+            WHERE ride_distance < distance_q1 - 1.5 * (distance_q3 - distance_q1)
+               OR ride_distance > distance_q3 + 1.5 * (distance_q3 - distance_q1)
+        ) AS distance_outliers,
+
+        COUNT(*) FILTER (
+            WHERE driver_rating < driver_q1 - 1.5 * (driver_q3 - driver_q1)
+               OR driver_rating > driver_q3 + 1.5 * (driver_q3 - driver_q1)
+        ) AS driver_rating_outliers,
+
+        COUNT(*) FILTER (
+            WHERE customer_rating < customer_q1 - 1.5 * (customer_q3 - customer_q1)
+               OR customer_rating > customer_q3 + 1.5 * (customer_q3 - customer_q1)
+        ) AS customer_rating_outliers
+    FROM raw_uber_bookings
+    CROSS JOIN stats
+)
+
+SELECT *
+FROM outliers;
+
+
+
+-- STEP 16: Validate rating and booking value ranges
+SELECT
+    MIN(driver_rating) AS min_driver_rating,
+    MAX(driver_rating) AS max_driver_rating,
+    MIN(customer_rating) AS min_customer_rating,
+    MAX(customer_rating) AS max_customer_rating,
+    MIN(booking_value) AS min_booking_value,
+    MAX(booking_value) AS max_booking_value
+FROM raw_uber_bookings;
+
+
+
+
+-- STEP 17: Validate booking values by booking status
+SELECT
+    booking_status,
+    MIN(booking_value) AS min_value,
+    MAX(booking_value) AS max_value,
+    AVG(booking_value) AS avg_value
+FROM raw_uber_bookings
+WHERE booking_value IS NOT NULL
+GROUP BY booking_status
+ORDER BY booking_status;
+
+
+
+
+-- STEP 18: Inspect high-value bookings
+SELECT
+    booking_value,
+    ride_distance,
+    vehicle_type,
+    pickup_location,
+    drop_location
+FROM raw_uber_bookings
+WHERE booking_value > 1000
+ORDER BY booking_value DESC
+LIMIT 30;
