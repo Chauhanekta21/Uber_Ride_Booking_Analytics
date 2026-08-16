@@ -70,7 +70,7 @@
 - Cancellation Details
 - Operational Metrics
 
-### 🔹 Dataset Link: [Uber Ride Booking Dataset](https://github.com/Chauhanekta21/Uber_Ride_Booking_Analytics/tree/main/Dataset/Normalized Dataset)
+### 🔹 Dataset Link: [uber-ride-booking-kaggle-dataset](https://www.kaggle.com/datasets/nidhisharma25/uber-ride-bookings-ncr-2024)
 
 ---
 
@@ -170,9 +170,9 @@ The raw dataset was inspected to understand its structure and assess overall dat
 **Why Normalization?**
 The raw dataset contained **150,000 ride records in one wide table**, with repeated customer, vehicle, location, and ride-reason information. Normalization reduces data redundancy, improves consistency, and establishes clear relationships between related data.
 
-### 🔷 1. Database Normalization
+### 1. Database Normalization
 
-The cleaned data was normalized into **5 tables with 30 columns**:
+🔷 **The cleaned data was normalized into **5 tables with 30 columns**:
 
 | Table               | Columns | Purpose                                       |
 | ------------------- | ------: | --------------------------------------------- |
@@ -182,34 +182,28 @@ The cleaned data was normalized into **5 tables with 30 columns**:
 | `dim_ride_reason`   |       3 | Stores cancellation & incomplete ride reasons |
 | `fact_ride_booking` |      22 | Stores individual ride records and metrics    |
 
-**Why these tables?**
+🔷 **Why these tables?**
 
-* 🔹 **Customer:** Avoids repeating customer information across rides.
-* 🔹 **Vehicle:** Separates reusable vehicle information from ride records.
-* 🔹 **Location:** Stores each location once and reuses its ID for pickup/drop-off.
-* 🔹 **Ride Reason:** Centralizes different cancellation and incomplete-ride reasons.
-* 🔹 **Fact:** Keeps ride-level data and connects it to the dimensions.
+* **Customer:** Avoids repeating customer information across rides.
+* **Vehicle:** Separates reusable vehicle information from ride records.
+* **Location:** Stores each location once and reuses its ID for pickup/drop-off.
+* **Ride Reason:** Centralizes different cancellation and incomplete-ride reasons.
+* **Fact:** Keeps ride-level data and connects it to the dimensions.
 
-**Key Design Decision:**
+🔷 **Key Design Decision:**
 A new `ride_id` was generated as the **Primary Key** because `booking_id` was not unique.
 
-### 🔷 2. ER Diagram
+🔷 **View Normalized Dataset Files:** [uber-ride-booking-normalized-dataset-files](https://www.kaggle.com/datasets/ektasinghchauhan/uber-ride-bookings-normalized-dataset?select=fact_ride_booking.csv)
+
+### 2. ER Diagram
 
 The ER diagram shows how the fact and dimension tables are connected through **Primary Keys (PK)** and **Foreign Keys (FK)**. PostgreSQL foreign keys maintain referential integrity between related tables.
 
-```text
-dim_customer ───────┐
-dim_vehicle ────────┤
-dim_location ───────┼──→ fact_ride_booking
-dim_ride_reason ────┘
-```
-
-**ER Diagram:**
 
 ![ER Diagram](Images/er_diagram.png)
 
 
-### 🔷 3. Normalized Tables
+### 3. Normalized Tables
 
 ####  `dim_customer`
 
@@ -217,10 +211,6 @@ dim_ride_reason ────┘
 | ------------- | ----------- | ---------- |
 | `customer_id` | VARCHAR(50) | **PK**     |
 
-
-```markdown
-![dim_customer](images/dim_customer.png)
-```
 
 ---
 
@@ -232,10 +222,6 @@ dim_ride_reason ────┘
 | `vehicle_type` | VARCHAR(50) | **UNIQUE, NOT NULL** |
 
 
-```markdown
-![dim_vehicle](images/dim_vehicle.png)
-```
-
 ---
 
 ####  `dim_location`
@@ -246,12 +232,6 @@ dim_ride_reason ────┘
 | `location_name` | VARCHAR(100) | **UNIQUE, NOT NULL** |
 
 
-```markdown
-![dim_location](images/dim_location.png)
-```
-
----
-
 ####  `dim_ride_reason`
 
 | Column        | Data Type    | Constraint   |
@@ -260,12 +240,6 @@ dim_ride_reason ────┘
 | `reason_type` | VARCHAR(30)  | **NOT NULL** |
 | `reason`      | VARCHAR(100) | **NOT NULL** |
 
-
-```markdown
-![dim_ride_reason](images/dim_ride_reason.png)
-```
-
----
 
 ####  `fact_ride_booking`
 
@@ -294,10 +268,6 @@ dim_ride_reason ────┘
 | `customer_rating`            | NUMERIC     | —          |
 | `payment_method`             | VARCHAR(50) | —          |
 
-
-```markdown
-![fact_ride_booking](images/fact_ride_booking.png)
-```
 
 **Validation:** Confirmed **150,000 ride records**, **150,000 unique `ride_id`s**, and **0 missing mandatory dimension mappings** before applying the FK constraints.
 
