@@ -206,8 +206,6 @@ dim_ride_reason ────┘
 
 **ER Diagram:**
 
->  Add your exported PostgreSQL ER diagram image here.
-
 ```markdown
 ![ER Diagram](images/er_diagram.png)
 ```
@@ -220,7 +218,6 @@ dim_ride_reason ────┘
 | ------------- | ----------- | ---------- |
 | `customer_id` | VARCHAR(50) | **PK**     |
 
->  Add `dim_customer` PostgreSQL screenshot here.
 
 ```markdown
 ![dim_customer](images/dim_customer.png)
@@ -235,7 +232,6 @@ dim_ride_reason ────┘
 | `vehicle_id`   | VARCHAR(10) | **PK**               |
 | `vehicle_type` | VARCHAR(50) | **UNIQUE, NOT NULL** |
 
->  Add `dim_vehicle` PostgreSQL screenshot here.
 
 ```markdown
 ![dim_vehicle](images/dim_vehicle.png)
@@ -250,7 +246,6 @@ dim_ride_reason ────┘
 | `location_id`   | VARCHAR(10)  | **PK**               |
 | `location_name` | VARCHAR(100) | **UNIQUE, NOT NULL** |
 
-> 📷 Add `dim_location` PostgreSQL screenshot here.
 
 ```markdown
 ![dim_location](images/dim_location.png)
@@ -266,7 +261,6 @@ dim_ride_reason ────┘
 | `reason_type` | VARCHAR(30)  | **NOT NULL** |
 | `reason`      | VARCHAR(100) | **NOT NULL** |
 
-> 📷 Add `dim_ride_reason` PostgreSQL screenshot here.
 
 ```markdown
 ![dim_ride_reason](images/dim_ride_reason.png)
@@ -274,7 +268,7 @@ dim_ride_reason ────┘
 
 ---
 
-#### 🚕 `fact_ride_booking`
+####  `fact_ride_booking`
 
 | Column                       | Data Type   | Constraint |
 | ---------------------------- | ----------- | ---------- |
@@ -301,7 +295,6 @@ dim_ride_reason ────┘
 | `customer_rating`            | NUMERIC     | —          |
 | `payment_method`             | VARCHAR(50) | —          |
 
->  Add `fact_ride_booking` PostgreSQL screenshot here.
 
 ```markdown
 ![fact_ride_booking](images/fact_ride_booking.png)
