@@ -206,9 +206,8 @@ dim_ride_reason ────┘
 
 **ER Diagram:**
 
-```markdown
 ![ER Diagram](images/er_diagram.png)
-```
+
 
 ### 🔷 3. Normalized Tables
 
