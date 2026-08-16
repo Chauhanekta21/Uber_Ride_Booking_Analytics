@@ -127,31 +127,27 @@ Project Deployment
 
 ## 📈 Data Inspection
 
-The raw dataset was inspected to understand its structure and assess overall data quality before performing any cleaning or               transformation.
+The raw dataset was inspected to understand its structure and assess data quality before cleaning and transformation.
 
-- **Dataset Structure:** Confirmed 150,000 records across 21 columns and reviewed the table structure and data types to ensure the                                fields were stored appropriately.
+- **Dataset Structure:** Confirmed 150,000 records across 21 columns and verified column data types.
 
-- **Categorical Values:** Inspected unique values across key categorical fields, including 5 booking statuses, 176 pickup/drop-off locations, 7 vehicle types, 5 customer cancellation reasons, 4 driver cancellation reasons, and 3 incomplete ride reasons.
+- **Categorical Values:** Found 5 booking statuses, 176 pickup/drop-off locations, 7 vehicle types, 5 customer cancellation reasons, 4 driver cancellation reasons, and 3 incomplete ride reasons.
 
-- **Geographic Coverage:** The locations show that the dataset primarily represents Delhi–NCR ride activity, covering Delhi, Gurugram,                               Noida, Ghaziabad, Faridabad, Greater Noida, and nearby areas such as Meerut, Sonipat, Panipat, Bhiwadi, and                               Bahadurgarh. This indicates that the dataset is regional rather than nationwide.
+- **Geographic Coverage:** Identified Delhi–NCR as the primary region, covering Delhi, Gurugram, Noida, Ghaziabad, Faridabad, Greater Noida, and nearby cities, confirming regional rather than nationwide coverage.
 
-- **NULL Values:** Checked all columns and found NULLs mainly in ride metrics, cancellation-related fields, ratings, booking value,                          ride distance, and payment method. These were further validated against booking_status. The NULL patterns                                 consistently matched the ride outcome—for example, cancelled rides naturally have no completed-ride metrics, while                        Completed rides contain the relevant ride values. Therefore, the NULLs are valid and will not be imputed.
+- **NULL Values:** Found NULLs mainly in ride metrics, cancellation fields, ratings, booking value, ride distance, and payment method. Their patterns matched booking_status, confirming they are genuine outcome-based NULLs and should not be imputed.
 
-- **Blank & Whitespace Check:** Checked relevant text columns for blank values and leading/trailing spaces using TRIM(). No blank values or unwanted spaces were found, so no text cleaning was required.
+- **Blank & Whitespace Check:** Used TRIM() on relevant text fields; found no blank values or unwanted spaces, so no text cleaning was required.
 
-- **Booking ID Uniqueness:** Of 150,000 records, 148,767 booking IDs are distinct, with 1,233 records associated with repeated IDs.                                    Repeated IDs represent different ride records, so they will be retained and treated as non-unique                                         identifiers.
+- **Booking ID Uniqueness:** Found 148,767 distinct booking IDs with 1,233 repeated records. Repeated IDs represent separate rides, so booking_id was retained as a non-unique business identifier.
 
-- **Customer ID Distribution:** Out of 150,000 records, 148,788 customer IDs were distinct, resulting in 1,212 additional records from                                    repeated customer IDs. Investigation confirmed that these represent customers making multiple bookings,                                   which is expected and does not indicate duplicate records.
+- **Customer ID Distribution:** Found 148,788 distinct customer IDs with 1,212 repeated records. Repeated IDs represent customers making multiple bookings, not duplicate rides.
 
-- **Binary Ride Indicators:** Inspected incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver. All three contain                                 only 1 and NULL — 1 indicates the event occurred, while NULL indicates it did not. During cleaning, NULLs                                 will be converted to 0, and these columns along with incomplete_rides_reason will be renamed to singular                                  form to match the dataset’s one-row-per-ride-record granularity.
+- **Binary Ride Indicators:** incomplete_rides, cancelled_rides_by_customer, and cancelled_rides_by_driver contained only 1 and NULL. NULL indicated the event did not occur, so these were converted to 0 during cleaning.
 
-- **Negative Value Check:** Checked numeric ride metrics, booking value, ride distance, and ratings for negative values. No invalid negative values were found.
+- **Negative Value Check:** Found no negative values in ride metrics, booking value, ride distance, or ratings, so no correction was required.
 
-- **Outlier Check:** IQR analysis found no outliers in avg_vtat, avg_ctat, or ride_distance. Statistical outliers were found in booking_value (3,435), driver_rating (5,203), and customer_rating (3,257). Both rating columns fall within the expected 3–5 rating scale, so these are valid values. booking_value outliers were reviewed, but without a reliable business rule, they were retained. No outliers were removed.
-
-
-![Data Model](Images/inspection.png)
-
+- **Outlier Check:** IQR analysis found no outliers in avg_vtat, avg_ctat, or ride_distance. Outliers in booking_value (3,435), driver_rating (5,203), and customer_rating (3,257) were retained because the ratings were within the valid 3–5 range and no reliable business rule justified removing the booking-value outliers.
 
 ---
 
@@ -171,9 +167,10 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 The raw dataset contained **150,000 ride records in one wide table**, with repeated customer, vehicle, location, and ride-reason information. Normalization reduces data redundancy, improves consistency, and establishes clear relationships between related data.
 
+
 ### 1. Database Normalization
 
-🔷 **The cleaned data was normalized into **5 tables with 30 columns:**
+🔷 **The cleaned data was normalized into 5 tables with 30 columns:**
 
 | Table               | Columns | Purpose                                       |
 | ------------------- | ------: | --------------------------------------------- |
@@ -196,12 +193,16 @@ A new `ride_id` was generated as the **Primary Key** because `booking_id` was no
 
 🔷 **View Normalized Dataset Files:** [uber-ride-booking-normalized-dataset-files](https://www.kaggle.com/datasets/ektasinghchauhan/uber-ride-bookings-normalized-dataset?select=fact_ride_booking.csv)
 
+
+
 ### 2. ER Diagram
 
 The ER diagram shows how the fact and dimension tables are connected through **Primary Keys (PK)** and **Foreign Keys (FK)**. PostgreSQL foreign keys maintain referential integrity between related tables.
 
 
 ![ER Diagram](Images/er_diagram.png)
+
+
 
 
 ### 3. Normalized Tables
@@ -232,6 +233,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 | `location_id`   | VARCHAR(10)  | **PK**               |
 | `location_name` | VARCHAR(100) | **UNIQUE, NOT NULL** |
 
+---
 
 #### 🔷 `dim_ride_reason`
 
@@ -241,6 +243,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 | `reason_type` | VARCHAR(30)  | **NOT NULL** |
 | `reason`      | VARCHAR(100) | **NOT NULL** |
 
+---
 
 #### 🔷 `fact_ride_booking`
 
