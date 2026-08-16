@@ -159,6 +159,10 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 - **Created Clean Table:** Created clean_uber_bookings as a duplicate of raw_uber_bookings to preserve the original dataset. All further                             cleaning, transformations, and analysis will be performed using the clean table, while keeping the raw data                               unchanged for reference.
 
+- **NULL Handling:** Replaced NULL with 0 in cancelled_rides_by_customer, cancelled_rides_by_driver, and incomplete_rides because NULL indicated the event did not occur.
+
+- **Column Renaming:** Renamed Cancelled Rides by Customer, Cancelled Rides by Driver, Incomplete Rides, and Incomplete Rides Reason to singular, consistent names because each row represents one ride record.
+
 ---
 
 ## Dataset Disclaimer
