@@ -92,7 +92,186 @@ FROM(
 ) AS reasons;
 
 
-SELECT * FROM dim_ride_reason;
+
+
+
+-- Step 04.11: Create ride booking fact table
+CREATE TABLE IF NOT EXISTS fact_ride_booking(
+	ride_id BIGSERIAL PRIMARY KEY,
+	booking_id VARCHAR(50),
+    booking_date DATE,
+    booking_time TIME,
+    booking_status VARCHAR(30),
+
+    customer_id VARCHAR(50),
+    vehicle_id VARCHAR(10),
+    pickup_location_id VARCHAR(10),
+    drop_location_id VARCHAR(10),
+
+	avg_vtat NUMERIC,
+    avg_ctat NUMERIC,
+
+    cancelled_ride_by_customer INTEGER,
+    customer_reason_id VARCHAR(10),
+
+    cancelled_ride_by_driver INTEGER,
+    driver_reason_id VARCHAR(10),
+
+    incomplete_ride INTEGER,
+    incomplete_reason_id VARCHAR(10),
+
+	booking_value NUMERIC,
+    ride_distance NUMERIC,
+    driver_rating NUMERIC,
+    customer_rating NUMERIC,
+
+    payment_method VARCHAR(50)
+);
+
+-- Step 04.12: Insert data into fact_ride_booking
+INSERT INTO fact_ride_booking (
+    booking_id,
+    booking_date,
+    booking_time,
+    booking_status,
+    customer_id,
+    vehicle_id,
+    pickup_location_id,
+    drop_location_id,
+    avg_vtat,
+    avg_ctat,
+    cancelled_ride_by_customer,
+    customer_reason_id,
+    cancelled_ride_by_driver,
+    driver_reason_id,
+    incomplete_ride,
+    incomplete_reason_id,
+    booking_value,
+    ride_distance,
+    driver_rating,
+    customer_rating,
+    payment_method
+)
+SELECT
+    c.booking_id,
+    c.booking_date,
+    c.booking_time,
+    c.booking_status,
+    c.customer_id,
+    v.vehicle_id,
+    pl.location_id,
+    dl.location_id,
+    c.avg_vtat,
+    c.avg_ctat,
+    c.cancelled_ride_by_customer,
+    cr.reason_id,
+    c.cancelled_ride_by_driver,
+    dr.reason_id,
+    c.incomplete_ride,
+    ir.reason_id,
+    c.booking_value,
+    c.ride_distance,
+    c.driver_rating,
+    c.customer_rating,
+    c.payment_method
+
+FROM clean_uber_bookings c
+
+LEFT JOIN dim_vehicle v
+    ON c.vehicle_type = v.vehicle_type
+
+LEFT JOIN dim_location pl
+    ON c.pickup_location = pl.location_name
+
+LEFT JOIN dim_location dl
+    ON c.drop_location = dl.location_name
+
+LEFT JOIN dim_ride_reason cr
+    ON c.customer_cancellation_reason = cr.reason
+    AND cr.reason_type = 'Customer Cancellation'
+
+LEFT JOIN dim_ride_reason dr
+    ON c.driver_cancellation_reason = dr.reason
+    AND dr.reason_type = 'Driver Cancellation'
+
+LEFT JOIN dim_ride_reason ir
+    ON c.incomplete_ride_reason = ir.reason
+    AND ir.reason_type = 'Incomplete Ride';
+
+
+
+
+
+
+-- Step 04.13: Validate fact table data
+-- Verify that the inserted records, ride IDs, and dimension mappings are correct.
+
+-- Check total records
+SELECT COUNT(*) AS total_rides
+FROM fact_ride_booking;
+
+-- Check ride ID uniqueness
+SELECT COUNT(*) AS total_ids,
+       COUNT(DISTINCT ride_id) AS unique_ids
+FROM fact_ride_booking;
+
+-- Check dimension ID mappings
+-- All mandatory dimension mappings should have 0 missing values.
+SELECT
+    COUNT(*) FILTER (WHERE customer_id IS NULL) AS missing_customer,
+    COUNT(*) FILTER (WHERE vehicle_id IS NULL) AS missing_vehicle,
+    COUNT(*) FILTER (WHERE pickup_location_id IS NULL) AS missing_pickup,
+    COUNT(*) FILTER (WHERE drop_location_id IS NULL) AS missing_drop
+FROM fact_ride_booking;
+
+-- Preview fact table records
+SELECT *
+FROM fact_ride_booking;
+
+
+
+
+
+-- Step 04.14: Add foreign key relationships
+-- Connect the fact table with its dimension tables.
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_customer
+FOREIGN KEY(customer_id)
+REFERENCES dim_customer(customer_id);
+
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_vehicle
+FOREIGN KEY(vehicle_id)
+REFERENCES dim_vehicle(vehicle_id);
+
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_pickup_location
+FOREIGN KEY (pickup_location_id)
+REFERENCES dim_location(location_id);
+
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_drop_location
+FOREIGN KEY (drop_location_id)
+REFERENCES dim_location(location_id);
+
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_customer_reason
+FOREIGN KEY (customer_reason_id)
+REFERENCES dim_ride_reason(reason_id);
+
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_driver_reason
+FOREIGN KEY (driver_reason_id)
+REFERENCES dim_ride_reason(reason_id);
+
+ALTER TABLE fact_ride_booking
+ADD CONSTRAINT fk_incomplete_reason
+FOREIGN KEY (incomplete_reason_id)
+REFERENCES dim_ride_reason(reason_id);
+
+
+
+
 
 
 
