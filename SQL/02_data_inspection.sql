@@ -47,6 +47,8 @@ FROM raw_uber_bookings;
 SELECT DISTINCT incomplete_rides_reason
 FROM raw_uber_bookings;
 
+SELECT DISTINCT vehicle_type
+FROM raw_uber_bookings;
 
 
 
