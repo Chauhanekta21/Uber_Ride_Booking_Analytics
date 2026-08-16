@@ -165,6 +165,151 @@ The raw dataset was inspected to understand its structure and assess overall dat
 
 ---
 
+## 📈 Database Normalization
+
+**Why Normalization?**
+The raw dataset contained **150,000 ride records in one wide table**, with repeated customer, vehicle, location, and ride-reason information. Normalization reduces data redundancy, improves consistency, and establishes clear relationships between related data.
+
+### 🔷 1. Database Normalization
+
+The cleaned data was normalized into **5 tables with 30 columns**:
+
+| Table               | Columns | Purpose                                       |
+| ------------------- | ------: | --------------------------------------------- |
+| `dim_customer`      |       1 | Stores unique customer IDs                    |
+| `dim_vehicle`       |       2 | Stores vehicle IDs and vehicle types          |
+| `dim_location`      |       2 | Stores unique locations                       |
+| `dim_ride_reason`   |       3 | Stores cancellation & incomplete ride reasons |
+| `fact_ride_booking` |      22 | Stores individual ride records and metrics    |
+
+**Why these tables?**
+
+* 🔹 **Customer:** Avoids repeating customer information across rides.
+* 🔹 **Vehicle:** Separates reusable vehicle information from ride records.
+* 🔹 **Location:** Stores each location once and reuses its ID for pickup/drop-off.
+* 🔹 **Ride Reason:** Centralizes different cancellation and incomplete-ride reasons.
+* 🔹 **Fact:** Keeps ride-level data and connects it to the dimensions.
+
+**Key Design Decision:**
+A new `ride_id` was generated as the **Primary Key** because `booking_id` was not unique.
+
+### 🔷 2. ER Diagram
+
+The ER diagram shows how the fact and dimension tables are connected through **Primary Keys (PK)** and **Foreign Keys (FK)**. PostgreSQL foreign keys maintain referential integrity between related tables.
+
+```text
+dim_customer ───────┐
+dim_vehicle ────────┤
+dim_location ───────┼──→ fact_ride_booking
+dim_ride_reason ────┘
+```
+
+**ER Diagram:**
+
+>  Add your exported PostgreSQL ER diagram image here.
+
+```markdown
+![ER Diagram](images/er_diagram.png)
+```
+
+### 🔷 3. Normalized Tables
+
+####  `dim_customer`
+
+| Column        | Data Type   | Constraint |
+| ------------- | ----------- | ---------- |
+| `customer_id` | VARCHAR(50) | **PK**     |
+
+>  Add `dim_customer` PostgreSQL screenshot here.
+
+```markdown
+![dim_customer](images/dim_customer.png)
+```
+
+---
+
+####  `dim_vehicle`
+
+| Column         | Data Type   | Constraint           |
+| -------------- | ----------- | -------------------- |
+| `vehicle_id`   | VARCHAR(10) | **PK**               |
+| `vehicle_type` | VARCHAR(50) | **UNIQUE, NOT NULL** |
+
+>  Add `dim_vehicle` PostgreSQL screenshot here.
+
+```markdown
+![dim_vehicle](images/dim_vehicle.png)
+```
+
+---
+
+####  `dim_location`
+
+| Column          | Data Type    | Constraint           |
+| --------------- | ------------ | -------------------- |
+| `location_id`   | VARCHAR(10)  | **PK**               |
+| `location_name` | VARCHAR(100) | **UNIQUE, NOT NULL** |
+
+> 📷 Add `dim_location` PostgreSQL screenshot here.
+
+```markdown
+![dim_location](images/dim_location.png)
+```
+
+---
+
+####  `dim_ride_reason`
+
+| Column        | Data Type    | Constraint   |
+| ------------- | ------------ | ------------ |
+| `reason_id`   | VARCHAR(10)  | **PK**       |
+| `reason_type` | VARCHAR(30)  | **NOT NULL** |
+| `reason`      | VARCHAR(100) | **NOT NULL** |
+
+> 📷 Add `dim_ride_reason` PostgreSQL screenshot here.
+
+```markdown
+![dim_ride_reason](images/dim_ride_reason.png)
+```
+
+---
+
+#### 🚕 `fact_ride_booking`
+
+| Column                       | Data Type   | Constraint |
+| ---------------------------- | ----------- | ---------- |
+| `ride_id`                    | BIGSERIAL   | **PK**     |
+| `booking_id`                 | VARCHAR(50) | —          |
+| `booking_date`               | DATE        | —          |
+| `booking_time`               | TIME        | —          |
+| `booking_status`             | VARCHAR(30) | —          |
+| `customer_id`                | VARCHAR(50) | **FK**     |
+| `vehicle_id`                 | VARCHAR(10) | **FK**     |
+| `pickup_location_id`         | VARCHAR(10) | **FK**     |
+| `drop_location_id`           | VARCHAR(10) | **FK**     |
+| `avg_vtat`                   | NUMERIC     | —          |
+| `avg_ctat`                   | NUMERIC     | —          |
+| `cancelled_ride_by_customer` | INTEGER     | —          |
+| `customer_reason_id`         | VARCHAR(10) | **FK**     |
+| `cancelled_ride_by_driver`   | INTEGER     | —          |
+| `driver_reason_id`           | VARCHAR(10) | **FK**     |
+| `incomplete_ride`            | INTEGER     | —          |
+| `incomplete_reason_id`       | VARCHAR(10) | **FK**     |
+| `booking_value`              | NUMERIC     | —          |
+| `ride_distance`              | NUMERIC     | —          |
+| `driver_rating`              | NUMERIC     | —          |
+| `customer_rating`            | NUMERIC     | —          |
+| `payment_method`             | VARCHAR(50) | —          |
+
+>  Add `fact_ride_booking` PostgreSQL screenshot here.
+
+```markdown
+![fact_ride_booking](images/fact_ride_booking.png)
+```
+
+**Validation:** Confirmed **150,000 ride records**, **150,000 unique `ride_id`s**, and **0 missing mandatory dimension mappings** before applying the FK constraints.
+
+
 ## Dataset Disclaimer
 
 - This dataset is intended for educational purposes, portfolio development, and business analytics learning. It should not be considered    official Uber operational data.
