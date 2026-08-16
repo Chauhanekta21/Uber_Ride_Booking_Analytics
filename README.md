@@ -168,11 +168,12 @@ The raw dataset was inspected to understand its structure and assess overall dat
 ## 📈 Database Normalization
 
 **Why Normalization?**
+
 The raw dataset contained **150,000 ride records in one wide table**, with repeated customer, vehicle, location, and ride-reason information. Normalization reduces data redundancy, improves consistency, and establishes clear relationships between related data.
 
 ### 1. Database Normalization
 
-🔷 **The cleaned data was normalized into **5 tables with 30 columns**:
+🔷 **The cleaned data was normalized into **5 tables with 30 columns:**
 
 | Table               | Columns | Purpose                                       |
 | ------------------- | ------: | --------------------------------------------- |
@@ -205,7 +206,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 ### 3. Normalized Tables
 
-####  `dim_customer`
+#### 🔷 `dim_customer`
 
 | Column        | Data Type   | Constraint |
 | ------------- | ----------- | ---------- |
@@ -214,7 +215,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 ---
 
-####  `dim_vehicle`
+#### 🔷 `dim_vehicle`
 
 | Column         | Data Type   | Constraint           |
 | -------------- | ----------- | -------------------- |
@@ -224,7 +225,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 ---
 
-####  `dim_location`
+#### 🔷 `dim_location`
 
 | Column          | Data Type    | Constraint           |
 | --------------- | ------------ | -------------------- |
@@ -232,7 +233,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 | `location_name` | VARCHAR(100) | **UNIQUE, NOT NULL** |
 
 
-####  `dim_ride_reason`
+#### 🔷 `dim_ride_reason`
 
 | Column        | Data Type    | Constraint   |
 | ------------- | ------------ | ------------ |
@@ -241,7 +242,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 | `reason`      | VARCHAR(100) | **NOT NULL** |
 
 
-####  `fact_ride_booking`
+#### 🔷 `fact_ride_booking`
 
 | Column                       | Data Type   | Constraint |
 | ---------------------------- | ----------- | ---------- |
