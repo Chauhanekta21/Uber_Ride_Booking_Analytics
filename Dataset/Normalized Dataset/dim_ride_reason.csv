@@ -1,0 +1,13 @@
+reason_id,reason_type,reason
+R01,Customer Cancellation,AC is not working
+R02,Customer Cancellation,Change of plans
+R03,Customer Cancellation,Driver asked to cancel
+R04,Customer Cancellation,Driver is not moving towards pickup location
+R05,Customer Cancellation,Wrong Address
+R06,Driver Cancellation,Customer related issue
+R07,Driver Cancellation,More than permitted people in there
+R08,Driver Cancellation,Personal & Car related issues
+R09,Driver Cancellation,The customer was coughing/sick
+R10,Incomplete Ride,Customer Demand
+R11,Incomplete Ride,Other Issue
+R12,Incomplete Ride,Vehicle Breakdown
