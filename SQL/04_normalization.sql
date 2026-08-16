@@ -63,6 +63,37 @@ FROM (
 
 
 
+-- Step 04.8: Create ride reason dimension table
+CREATE TABLE IF NOT EXISTS dim_ride_reason(
+	reason_id VARCHAR(10) PRIMARY KEY,
+	reason_type VARCHAR(30) NOT NULL,
+	reason VARCHAR(100) NOT NULL
+)
+
+-- Step 04.9: Add all ride reasons to the dimension
+INSERT INTO dim_ride_reason(reason_id, reason_type, reason)
+SELECT 'R' || LPAD(ROW_NUMBER() OVER (ORDER BY reason_type, reason)::TEXT, 2, '0') AS reason_id, reason_type, reason
+FROM(
+	SELECT 'Customer Cancellation' AS reason_type, customer_cancellation_reason AS reason
+	FROM clean_uber_bookings
+	WHERE customer_cancellation_reason IS NOT NULL
+
+	UNION
+
+	SELECT 'Driver Cancellation' AS reason_type, driver_cancellation_reason AS reason
+	FROM clean_uber_bookings
+	WHERE driver_cancellation_reason IS NOT NULL
+
+	UNION 
+
+	SELECT 'Incomplete Ride' AS reason_type, incomplete_ride_reason AS reason
+	FROM clean_uber_bookings
+	WHERE incomplete_ride_reason IS NOT NULL
+) AS reasons;
+
+
+SELECT * FROM dim_ride_reason;
+
 
 
 
