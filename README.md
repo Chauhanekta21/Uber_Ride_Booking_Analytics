@@ -87,21 +87,17 @@ Data Inspection (SQL)
         ↓
 Data Cleaning (SQL)
         ↓
-Database Normalization
+Database Normalization (SQL)
         ↓
-ER Diagram
+ER Diagram (SQL)
         ↓
-Normalized Tables
+Normalized Tables (SQL) 
         ↓
-Data Loading
-        ↓
-SQL Analysis
-        ↓
-Views & Indexes
+SQL Analysis 
         ↓
 Python + SQLAlchemy
         ↓
-Streamlit Dashboard
+Interactive Dashboard (Power BI)
         ↓
 Project Deployment
 ```
