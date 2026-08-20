@@ -113,6 +113,8 @@ Project Deployment
 
 - Created a PostgreSQL database named **`uber_ride_booking_db`** to store and manage the Uber Ride Booking dataset for SQL-based data       analysis.
 
+![Data Model](Images/database_setup.png)
+
 ---
 
 ## 📈 Raw Data Import
