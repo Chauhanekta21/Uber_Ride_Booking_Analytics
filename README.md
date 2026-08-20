@@ -113,15 +113,17 @@ Project Deployment
 
 - Created a PostgreSQL database named **`uber_ride_booking_db`** to store and manage the Uber Ride Booking dataset for SQL-based data       analysis.
 
-![Data Model](Images/database_setup.png)
 
 ---
 
 ## 📈 Raw Data Import
 
-- Imported the raw CSV dataset into the **`raw_uber_bookings`** table using pgAdmin's Import/Export tool. The table contains all            original dataset features without modification. 
+- Created the raw_uber_bookings table and imported the raw CSV dataset using pgAdmin's Import/Export tool. The table contains all           original dataset features without modification. 
 
 - During import, `"null"` string values were mapped to SQL `NULL` values to ensure proper data type handling and prevent import errors.
+
+
+![Data Model](Images/data_import.png)
 
 
 ---
@@ -151,6 +153,8 @@ The raw dataset was inspected to understand its structure and assess data qualit
 
 - **Outlier Check:** IQR analysis found no outliers in avg_vtat, avg_ctat, or ride_distance. Outliers in booking_value (3,435), driver_rating (5,203), and customer_rating (3,257) were retained because the ratings were within the valid 3–5 range and no reliable business rule justified removing the booking-value outliers.
 
+![Data Model](Images/inspection.png)
+
 ---
 
 ## 📈 Data Cleaning
@@ -160,6 +164,8 @@ The raw dataset was inspected to understand its structure and assess data qualit
 - **NULL Handling:** Replaced NULL with 0 in cancelled_rides_by_customer, cancelled_rides_by_driver, and incomplete_rides because NULL indicated the event did not occur.
 
 - **Column Renaming:** Renamed Cancelled Rides by Customer, Cancelled Rides by Driver, Incomplete Rides, and Incomplete Rides Reason to singular, consistent names because each row represents one ride record.
+
+![Data Model](Images/cleaning.png)
 
 ---
 
@@ -194,6 +200,10 @@ The raw dataset contained **150,000 ride records in one wide table**, with repea
 A new `ride_id` was generated as the **Primary Key** because `booking_id` was not unique.
 
 🔷 **View Normalized Dataset Files:** [uber-ride-booking-normalized-dataset-files](https://www.kaggle.com/datasets/ektasinghchauhan/uber-ride-bookings-normalized-dataset?select=fact_ride_booking.csv)
+
+
+![Data Model](Images/normalization.png)
+
 
 
 
