@@ -95,7 +95,7 @@ Normalized Tables (SQL)
         ↓
 SQL Analysis 
         ↓
-Python + SQLAlchemy
+Advanced Analysis, Statistical Analysis & Visualization (Python + SQLAlchemy)
         ↓
 Interactive Dashboard (Power BI)
         ↓
