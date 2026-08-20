@@ -16,6 +16,9 @@ WHERE customer_id IS NOT NULL;
 SELECT COUNT(*) AS total_customers
 FROM dim_customer;
 
+SELECT *
+FROM dim_customer;
+
 
 
 
@@ -33,6 +36,9 @@ FROM(
 	FROM clean_uber_bookings
 	WHERE vehicle_type IS NOT NULL
 ) AS vehicles;
+
+SELECT *
+FROM dim_vehicle;
 
 
 
@@ -58,6 +64,9 @@ FROM (
 	FROM clean_uber_bookings
 	WHERE drop_location IS NOT NULL
 ) AS locations;
+
+SELECT *
+FROM dim_location;
 
 
 
@@ -90,6 +99,10 @@ FROM(
 	FROM clean_uber_bookings
 	WHERE incomplete_ride_reason IS NOT NULL
 ) AS reasons;
+
+SELECT *
+FROM dim_ride_reason;
+
 
 
 
@@ -198,6 +211,9 @@ LEFT JOIN dim_ride_reason ir
     ON c.incomplete_ride_reason = ir.reason
     AND ir.reason_type = 'Incomplete Ride';
 
+SELECT *
+FROM fact_ride_booking;
+
 
 
 
@@ -268,7 +284,6 @@ ALTER TABLE fact_ride_booking
 ADD CONSTRAINT fk_incomplete_reason
 FOREIGN KEY (incomplete_reason_id)
 REFERENCES dim_ride_reason(reason_id);
-
 
 
 

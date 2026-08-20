@@ -1,26 +1,26 @@
 -- STEP02: Inspected the raw dataset for structure, data quality, and consistency.
 
 
--- Step 01: Preview the dataset
+-- Step 02.1: Preview the dataset
 SELECT *
 FROM raw_uber_bookings;
 
 
 
--- Step 02: Count total records
+-- Step 02.2: Count total records
 SELECT COUNT(*) AS total_records
 FROM raw_uber_bookings;
 
 
 
--- Step 03: View table structure
+-- Step 02.3: View table structure
 SELECT *
 FROM information_schema.columns
 WHERE TABLE_NAME = 'raw_uber_bookings';
 
 
 
--- Step 04: Check column data types
+-- Step 02.4: Check column data types
 SELECT column_name, data_type
 FROM information_schema.columns
 WHERE TABLE_NAME = 'raw_uber_bookings';
@@ -28,7 +28,7 @@ WHERE TABLE_NAME = 'raw_uber_bookings';
 
 
 
--- STEP 05: Inspect distinct categorical values across key columns
+-- STEP 02.5: Inspect distinct categorical values across key columns
 SELECT DISTINCT booking_status
 FROM raw_uber_bookings;
 
@@ -53,7 +53,7 @@ FROM raw_uber_bookings;
 
 
 
--- Step 06: Check missing values
+-- Step 02.6: Check missing values
 SELECT
     COUNT(*) AS total_rows,
     COUNT(*) - COUNT(booking_date) AS date_nulls,
@@ -82,7 +82,7 @@ FROM raw_uber_bookings;
 
 
 
--- STEP 07: Validate NULL values by booking status
+-- STEP 02.7: Validate NULL values by booking status
 SELECT
     booking_status,
     COUNT(*) AS total_rides,
@@ -114,7 +114,7 @@ ORDER BY booking_status;
 
 
 
--- Step 08: Check blank values in text columns
+-- Step 02.8: Check blank values in text columns
 SELECT
     COUNT(*) FILTER (WHERE TRIM(booking_id) = '') AS booking_id_blank,
     COUNT(*) FILTER (WHERE TRIM(booking_status) = '') AS booking_status_blank,
@@ -130,7 +130,7 @@ FROM raw_uber_bookings;
 
 
 
--- Step 09: Check for leading/trailing spaces in text columns
+-- Step 02.9: Check for leading/trailing spaces in text columns
 SELECT *
 FROM raw_uber_bookings
 WHERE
@@ -147,7 +147,7 @@ WHERE
 
 
 
--- Step 10: Check duplicate records
+-- Step 2.10: Check duplicate records
 SELECT COUNT(*) AS total_rows, COUNT(DISTINCT(booking_id)) AS distinct_rows, 
 	   COUNT(*) - COUNT(DISTINCT(booking_id)) AS duplicate_rows
 FROM raw_uber_bookings;
@@ -155,7 +155,7 @@ FROM raw_uber_bookings;
 
 
 
--- STEP 11: Check duplicate booking IDs
+-- STEP 2.11: Check duplicate booking IDs
 SELECT booking_id, COUNT(*) AS duplicate_count
 FROM raw_uber_bookings
 GROUP BY booking_id
@@ -170,7 +170,7 @@ WHERE booking_id = 'CNR9603232';
 
 
 
--- Step 12: Check for exact duplicate rows
+-- Step 2.12: Check for exact duplicate rows
 SELECT *,
        COUNT(*) AS duplicate_count
 FROM raw_uber_bookings
@@ -194,13 +194,13 @@ HAVING COUNT(*) > 1;
 
 
 
--- STEP 13: Inspect customer ID uniqueness and repeated customer records
--- Sub-step 13.1: Compare total customer records with distinct customers
+-- STEP 2.13: Inspect customer ID uniqueness and repeated customer records
+-- Sub-step : Compare total customer records with distinct customers
 SELECT COUNT(customer_id) AS total_records, COUNT(DISTINCT(customer_id)) AS distint_customer_count,
 	   COUNT(customer_id) - COUNT(DISTINCT(customer_id)) AS duplicate_count
 FROM raw_uber_bookings;
 
--- Sub-step 13.2: Identify customers with multiple bookings
+-- Sub-step : Identify customers with multiple bookings
 SELECT customer_id, count(*) AS duplicate_count
 FROM raw_uber_bookings
 GROUP BY customer_id
@@ -208,7 +208,7 @@ HAVING COUNT(*) > 1
 ORDER BY COUNT(*) DESC
 LIMIT 30;
 
--- Sub-step 13.3: Inspect an individual customer with multiple bookings
+-- Sub-step : Inspect an individual customer with multiple bookings
 SELECT *
 FROM raw_uber_bookings
 WHERE customer_id = 'CID6715450';
@@ -216,13 +216,13 @@ WHERE customer_id = 'CID6715450';
 
 
 
--- STEP 14: Inspect binary ride indicator columns
+-- STEP 2.14: Inspect binary ride indicator columns
 SELECT DISTINCT incomplete_rides, cancelled_rides_by_customer, cancelled_rides_by_driver
 FROM raw_uber_bookings;
 
 
 
--- STEP 15: Check for invalid negative values
+-- STEP 2.15: Check for invalid negative values
 SELECT *
 FROM raw_uber_bookings
 WHERE avg_vtat < 0
@@ -235,7 +235,7 @@ WHERE avg_vtat < 0
 
 
 
--- STEP 16: Check for statistical outliers using the IQR method
+-- STEP 2.16: Check for statistical outliers using the IQR method
 
 WITH stats AS (
     SELECT
@@ -299,7 +299,7 @@ FROM outliers;
 
 
 
--- STEP 17: Validate rating and booking value ranges
+-- STEP 2.17: Validate rating and booking value ranges
 SELECT
     MIN(driver_rating) AS min_driver_rating,
     MAX(driver_rating) AS max_driver_rating,
@@ -312,7 +312,7 @@ FROM raw_uber_bookings;
 
 
 
--- STEP 18: Validate booking values by booking status
+-- STEP 2.18: Validate booking values by booking status
 SELECT
     booking_status,
     MIN(booking_value) AS min_value,
@@ -326,7 +326,7 @@ ORDER BY booking_status;
 
 
 
--- STEP 19: Inspect high-value bookings
+-- STEP 2.19: Inspect high-value bookings
 SELECT
     booking_value,
     ride_distance,
