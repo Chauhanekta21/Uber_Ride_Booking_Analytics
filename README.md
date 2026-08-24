@@ -30,7 +30,7 @@
 
 - Measure operational efficiency using pickup and trip time metrics.
 
-- Generate business insights using advanced SQL queries.
+- Generate business insights using advanced SQL queries
 
 ---
 
