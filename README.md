@@ -3,6 +3,8 @@
 
 > **Project Status: In Progress**
 
+![Data Model](Images/thumbnail.png)
+
 
 ---
 
