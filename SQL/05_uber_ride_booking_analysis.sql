@@ -1,7 +1,6 @@
 -- STEP05 : Uber Rides Booking Analysis Using SQL
 
 
-
 -- Step 05.1: Overall Booking Performance
 -- Total number of ride bookings
 SELECT COUNT(*) AS total_bookings
