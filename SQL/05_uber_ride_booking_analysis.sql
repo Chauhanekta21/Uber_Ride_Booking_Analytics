@@ -476,4 +476,17 @@ ORDER BY total_bookings DESC;
 
 
 
- 
+
+
+
+
+-- Step 05.6: Payment Distribution 
+SELECT COALESCE(payment_method, 'Unknown') AS payment_method,
+       COUNT(booking_id) AS total_bookings,
+       ROUND(COUNT(booking_id)::NUMERIC / SUM(COUNT(booking_id)) OVER() * 100, 2) AS booking_percentage
+FROM fact_ride_booking
+WHERE booking_status = 'Completed'
+GROUP BY COALESCE(payment_method, 'Unknown')
+ORDER BY total_bookings DESC;
+
+
