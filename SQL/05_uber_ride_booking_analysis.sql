@@ -37,8 +37,6 @@ SELECT ROUND(COALESCE(AVG(avg_vtat), 0), 2) AS completed_avg_vtat,
 FROM fact_ride_booking
 WHERE booking_status = 'Completed';
 
-select MIN()
-
 
 
 
@@ -151,8 +149,14 @@ GROUP BY customer_type;
 
 
 -- Step 05.3: Vehicle Performance
--- Total bookings made for each vehicle type
-SELECT v.vehicle_type, COUNT(f.booking_id) AS total_bookings,
+-- Total bookings by booking_status made for each vehicle type
+SELECT v.vehicle_type, 
+	   COUNT(f.booking_id) AS total_bookings,
+	   COUNT(f.booking_id) FILTER (WHERE f.booking_status = 'Completed') AS completed_rides,
+	   COUNT(f.booking_id) FILTER (WHERE f.booking_status = 'Incomplete') AS incomplete_rides,
+	   COUNT(f.booking_id) FILTER (WHERE f.booking_status = 'Cancelled by Customer') AS customer_cancellations,
+	   COUNT(f.booking_id) FILTER (WHERE f.booking_status = 'Cancelled by Driver') AS driver_cancellations,
+	   COUNT(f.booking_id) FILTER (WHERE f.booking_status = 'No Driver Found') AS no_driver_found
 FROM fact_ride_booking f
 JOIN dim_vehicle v
 ON f.vehicle_id = v.vehicle_id
@@ -196,7 +200,7 @@ ORDER BY avg_ride_distance DESC;
 
 
 -- Average customer rating for each vehicle type
-SELECT v.vehicle_type, ROUND(AVG(f.ride_distance), 2) AS avg_ride_distance
+SELECT v.vehicle_type, ROUND(AVG(f.customer_rating), 2) AS avg_ride_distance
 FROM fact_ride_booking f 
 JOIN dim_vehicle v
 ON f.vehicle_id = v.vehicle_id
@@ -280,7 +284,7 @@ FROM fact_ride_booking;
 -- Top cancellation reasons for customers
 SELECT r.reason, COUNT(*) AS cancellation_count
 FROM fact_ride_booking f
-JOIN dim_ride_cancellation_reason r
+JOIN dim_ride_reason r
 ON f.customer_reason_id = r.reason_id
 WHERE f.booking_status = 'Cancelled by Customer'
 GROUP BY r.reason
@@ -290,7 +294,7 @@ ORDER BY cancellation_count DESC;
 -- Top cancellation reasons for drivers
 SELECT r.reason, COUNT(*) AS cancellation_count
 FROM fact_ride_booking f
-JOIN dim_ride_cancellation_reason r
+JOIN dim_ride_reason r
 ON f.driver_reason_id = r.reason_id
 WHERE f.booking_status = 'Cancelled by Driver'
 GROUP BY r.reason
@@ -428,7 +432,7 @@ ORDER BY total_booking_value DESC
 LIMIT 10;
 
 
--- Which routes have the highest cancellation rate, considering routes with at least 50 bookings?
+-- Which routes have the highest cancellation rate, considering routes with at least 10 bookings?
 SELECT
     pickup.location_name AS pickup_location,
     dropoff.location_name AS drop_location,
@@ -443,6 +447,18 @@ ON f.drop_location_id = dropoff.location_id
 GROUP BY pickup.location_name, dropoff.location_name
 HAVING COUNT(f.booking_id) >= 10
 ORDER BY cancellation_rate DESC
+LIMIT 10;
+
+
+-- Top 10 pickup locations by incomplete rides
+SELECT l.location_name AS pickup_location,
+       COUNT(f.booking_id) AS incomplete_rides
+FROM fact_ride_booking f
+JOIN dim_location l
+ON f.pickup_location_id = l.location_id
+WHERE f.booking_status = 'Incomplete'
+GROUP BY l.location_name
+ORDER BY incomplete_rides DESC
 LIMIT 10;
 
 
@@ -479,14 +495,20 @@ ORDER BY total_bookings DESC;
 
 
 
--- Step 05.6: Payment Distribution 
-SELECT COALESCE(payment_method, 'Unknown') AS payment_method,
-       COUNT(booking_id) AS total_bookings,
-       ROUND(COUNT(booking_id)::NUMERIC / SUM(COUNT(booking_id)) OVER() * 100, 2) AS booking_percentage
-FROM fact_ride_booking
-WHERE booking_status = 'Completed'
-GROUP BY COALESCE(payment_method, 'Unknown')
-ORDER BY total_bookings DESC;
+
+-- Step 05.6: Top incomplete ride reasons
+SELECT
+    r.reason,
+    COUNT(f.booking_id) AS incomplete_rides
+FROM fact_ride_booking f
+JOIN dim_ride_reason r
+ON f.incomplete_reason_id = r.reason_id
+WHERE f.booking_status = 'Incomplete'
+GROUP BY r.reason
+ORDER BY incomplete_rides DESC;
+
+SELECT *
+FROM fact_ride_booking;
 
 
 
@@ -495,7 +517,7 @@ ORDER BY total_bookings DESC;
 
 
 -- Step 05.7: Rating & Service Quality Analysis
--- Average driver rating & customer rating
+-- Overall Average driver rating & customer rating
 SELECT ROUND(COALESCE(AVG(driver_rating), 0), 2) AS avg_driver_rating, 
        ROUND(COALESCE(AVG(customer_rating), 0), 2) AS avg_customer_rating
 FROM fact_ride_booking;
@@ -514,6 +536,22 @@ JOIN dim_vehicle v
 ON f.vehicle_id = v.vehicle_id
 WHERE booking_status = 'Completed'
 GROUP BY v.vehicle_type;
+
+
+
+
+
+
+
+
+-- Step 05.8: Payment Distribution 
+SELECT COALESCE(payment_method, 'Unknown') AS payment_method,
+       COUNT(booking_id) AS total_bookings,
+       ROUND(COUNT(booking_id)::NUMERIC / SUM(COUNT(booking_id)) OVER() * 100, 2) AS booking_percentage
+FROM fact_ride_booking
+WHERE booking_status = 'Completed'
+GROUP BY COALESCE(payment_method, 'Unknown')
+ORDER BY total_bookings DESC;
 
 
 
