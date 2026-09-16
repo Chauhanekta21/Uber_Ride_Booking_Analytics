@@ -479,7 +479,6 @@ ORDER BY total_bookings DESC;
 
 
 
-
 -- Step 05.6: Payment Distribution 
 SELECT COALESCE(payment_method, 'Unknown') AS payment_method,
        COUNT(booking_id) AS total_bookings,
@@ -488,5 +487,37 @@ FROM fact_ride_booking
 WHERE booking_status = 'Completed'
 GROUP BY COALESCE(payment_method, 'Unknown')
 ORDER BY total_bookings DESC;
+
+
+
+
+
+
+
+-- Step 05.7: Rating & Service Quality Analysis
+-- Average driver rating & customer rating
+SELECT ROUND(COALESCE(AVG(driver_rating), 0), 2) AS avg_driver_rating, 
+       ROUND(COALESCE(AVG(customer_rating), 0), 2) AS avg_customer_rating
+FROM fact_ride_booking;
+
+
+-- Rating summary by vehicle type for completed rides
+SELECT v.vehicle_type AS vehicle, 
+	   ROUND(COALESCE(AVG(f.customer_rating), 0), 2) AS avg_customer_rating, 
+       MAX(f.customer_rating) AS highest_customer_rating,
+	   MIN(f.customer_rating) AS lowest_customer_rating,
+       ROUND(COALESCE(AVG(f.driver_rating), 0), 2) AS avg_driver_rating, 
+	   MAX(f.driver_rating) AS highest_driver_rating,
+	   MIN(f.driver_rating) AS lowest_driver_rating
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+WHERE booking_status = 'Completed'
+GROUP BY v.vehicle_type;
+
+
+
+
+
 
 
