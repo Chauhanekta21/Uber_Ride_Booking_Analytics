@@ -26,11 +26,6 @@ SELECT ROUND(COALESCE(AVG(booking_value), 0), 2) AS average_booking_value
 FROM fact_ride_booking;
 
 
---Total distance travelled across all rides
-SELECT COALESCE(SUM(ride_distance), 0) AS total_distance
-FROM fact_ride_booking;
-
-
 --Average distance per ride
 SELECT ROUND(COALESCE(AVG(ride_distance), 0), 2) AS average_distance
 FROM fact_ride_booking;
@@ -42,7 +37,7 @@ SELECT ROUND(COALESCE(AVG(avg_vtat), 0), 2) AS completed_avg_vtat,
 FROM fact_ride_booking
 WHERE booking_status = 'Completed';
 
-
+select MIN()
 
 
 
@@ -74,7 +69,6 @@ FROM (
 ) AS customer_bookings;
 
 
-
 --Who are the top 10 most active customers based on booking count?
 SELECT customer_id, COUNT(booking_id) AS total_bookings
 FROM fact_ride_booking
@@ -84,4 +78,69 @@ LIMIT 10;
 
 
 --What percentage of customers are repeat vs one-time customers?
+SELECT
+    ROUND(COUNT(*) FILTER (WHERE total_bookings = 1)::NUMERIC / COUNT(*) * 100, 2) AS one_time_customer_percent,
+	ROUND(COUNT(*) FILTER (WHERE total_bookings > 1)::NUMERIC / COUNT(*) * 100, 2) AS repeat_customer_percent
+FROM (
+    SELECT customer_id, COUNT(booking_id) AS total_bookings
+    FROM fact_ride_booking
+    GROUP BY customer_id
+) AS customer_bookings;
+
+
+--What is the average booking value per customer?
+SELECT ROUND(AVG(total_booking_value), 2) AS avg_booking_value_per_customer
+FROM (
+	SELECT customer_id, SUM(booking_value) AS total_booking_value
+	FROM fact_ride_booking
+	GROUP BY customer_id
+) AS customer_booking_value;
+
+
+--Which customers have generated the highest total booking value?
+SELECT customer_id, COALESCE(SUM(booking_value), 0) AS total_booking_value
+FROM fact_ride_booking
+GROUP BY customer_id
+ORDER BY total_booking_value DESC;
+
+
+--What is the average cancellation rate for customers?
+SELECT ROUND(AVG(cancellation_rate), 2) AS avg_customer_cancellation_rate
+FROM (
+    SELECT customer_id,
+           COUNT(*) FILTER (WHERE booking_status = 'Cancelled by Customer')::NUMERIC / COUNT(*) * 100 AS cancellation_rate
+    FROM fact_ride_booking
+    GROUP BY customer_id
+) AS customer_cancellation;
+
+
+--Which customers have the highest cancellation rate, considering only customers with at >=2 bookings?  
+SELECT 
+    customer_id, 
+	COUNT(*) AS total_bookings,
+    COUNT(*) FILTER (WHERE booking_status = 'Cancelled by Customer') AS cancelled_bookings,
+    ROUND(COUNT(*) FILTER (WHERE booking_status = 'Cancelled by Customer')::NUMERIC / COUNT(*) * 100, 2) AS cancellation_rate
+FROM fact_ride_booking
+GROUP BY customer_id
+HAVING COUNT(*) >= 2
+ORDER BY cancellation_rate DESC;
+
+
+--Do repeat customers have a higher average booking value than one-time customers?  
+SELECT
+    CASE
+        WHEN total_bookings = 1 THEN 'One-time'
+        ELSE 'Repeat'
+    END AS customer_type,
+    ROUND(AVG(total_booking_value), 2) AS avg_booking_value
+FROM (
+    SELECT
+        customer_id,
+        COUNT(booking_id) AS total_bookings,
+        SUM(booking_value) AS total_booking_value
+    FROM fact_ride_booking
+    GROUP BY customer_id
+) AS customer_summary
+GROUP BY customer_type;         
+
 
