@@ -280,7 +280,7 @@ FROM fact_ride_booking;
 -- Top cancellation reasons for customers
 SELECT r.reason, COUNT(*) AS cancellation_count
 FROM fact_ride_booking f
-JOIN dim_ride_reason r
+JOIN dim_ride_cancellation_reason r
 ON f.customer_reason_id = r.reason_id
 WHERE f.booking_status = 'Cancelled by Customer'
 GROUP BY r.reason
@@ -290,7 +290,7 @@ ORDER BY cancellation_count DESC;
 -- Top cancellation reasons for drivers
 SELECT r.reason, COUNT(*) AS cancellation_count
 FROM fact_ride_booking f
-JOIN dim_ride_reason r
+JOIN dim_ride_cancellation_reason r
 ON f.driver_reason_id = r.reason_id
 WHERE f.booking_status = 'Cancelled by Driver'
 GROUP BY r.reason
@@ -329,4 +329,151 @@ ORDER BY v.vehicle_type;
 
 
 -- Step 05.5: Location Analysis
+-- Top 10 pickup locations by booking count
+SELECT l.location_name, COUNT(f.booking_id) AS total_bookings
+FROM fact_ride_booking f
+JOIN dim_location l
+ON l.location_id = f.pickup_location_id
+GROUP BY l.location_name
+ORDER BY total_bookings DESC
+LIMIT 10;
+
+
+-- Top 10 drop locations by booking count
+SELECT l.location_name, COUNT(f.booking_id) AS total_bookings
+FROM fact_ride_booking f
+JOIN dim_location l
+ON l.location_id = f.drop_location_id
+GROUP BY l.location_name
+ORDER BY total_bookings DESC
+LIMIT 10;
+
+
+-- Most common pickup → drop routes
+SELECT
+    pickup.location_name AS pickup_location,
+    drop.location_name AS drop_location,
+    COUNT(f.booking_id) AS total_bookings
+FROM fact_ride_booking f
+JOIN dim_location pickup
+ON f.pickup_location_id = pickup.location_id
+JOIN dim_location drop
+ON f.drop_location_id = drop.location_id
+GROUP BY pickup.location_name, drop.location_name
+ORDER BY total_bookings DESC
+LIMIT 10;
+
+
+-- Routes have the highest number of completed rides
+SELECT
+    pickup.location_name AS pickup_location,
+    dropoff.location_name AS drop_location,
+    COUNT(f.booking_id) AS completed_rides
+FROM fact_ride_booking f
+JOIN dim_location pickup
+    ON f.pickup_location_id = pickup.location_id
+JOIN dim_location dropoff
+    ON f.drop_location_id = dropoff.location_id
+WHERE f.booking_status = 'Completed'
+GROUP BY pickup.location_name, dropoff.location_name
+ORDER BY completed_rides DESC
+LIMIT 10;
+
+
+-- Average booking value by pickup location
+SELECT l.location_name AS pickup_location, ROUND(AVG(f.booking_value), 2) AS avg_booking_value
+FROM fact_ride_booking f
+JOIN dim_location l
+ON f.pickup_location_id = l.location_id
+GROUP BY l.location_name
+ORDER BY avg_booking_value DESC;
+
+
+-- Which pickup locations have the highest average ride distance
+SELECT
+    l.location_name AS pickup_location,
+    COUNT(f.booking_id) AS total_bookings,
+    ROUND(AVG(f.ride_distance), 2) AS avg_ride_distance
+FROM fact_ride_booking f
+JOIN dim_location l
+ON f.pickup_location_id = l.location_id
+GROUP BY l.location_name
+HAVING COUNT(f.booking_id) >= 100
+ORDER BY avg_ride_distance DESC
+LIMIT 10;
+
+
+-- Top 10 completion rate by pickup location
+SELECT
+    l.location_name AS pickup_location,
+    COUNT(f.booking_id) AS total_bookings,
+    ROUND(COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100, 2) AS completion_rate
+FROM fact_ride_booking f
+JOIN dim_location l
+ON f.pickup_location_id = l.location_id
+GROUP BY l.location_name
+HAVING COUNT(f.booking_id) >= 100
+ORDER BY completion_rate DESC
+LIMIT 10;
+
+
+-- Which pickup locations generate the highest total booking value?
+SELECT l.location_name AS pickup_location,
+       SUM(f.booking_value) AS total_booking_value
+FROM fact_ride_booking f
+JOIN dim_location l
+ON f.pickup_location_id = l.location_id
+GROUP BY l.location_name
+ORDER BY total_booking_value DESC
+LIMIT 10;
+
+
+-- Which routes have the highest cancellation rate, considering routes with at least 50 bookings?
+SELECT
+    pickup.location_name AS pickup_location,
+    dropoff.location_name AS drop_location,
+    COUNT(f.booking_id) AS total_bookings,
+    COUNT(*) FILTER (WHERE f.booking_status IN ('Cancelled by Customer', 'Cancelled by Driver')) AS cancelled_bookings,
+    ROUND(COUNT(*) FILTER (WHERE f.booking_status IN ('Cancelled by Customer', 'Cancelled by Driver'))::NUMERIC / COUNT(*) * 100, 2) AS cancellation_rate
+FROM fact_ride_booking f
+JOIN dim_location pickup
+ON f.pickup_location_id = pickup.location_id
+JOIN dim_location dropoff
+ON f.drop_location_id = dropoff.location_id
+GROUP BY pickup.location_name, dropoff.location_name
+HAVING COUNT(f.booking_id) >= 10
+ORDER BY cancellation_rate DESC
+LIMIT 10;
+
+
+-- Which locations show high demand but low completion rates?
+SELECT l.location_name AS pickup_location,
+       COUNT(f.booking_id) AS total_bookings,
+       ROUND(COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100, 2) AS completion_rate
+FROM fact_ride_booking f
+JOIN dim_location l
+ON f.pickup_location_id = l.location_id
+GROUP BY l.location_name
+HAVING COUNT(f.booking_id) > (
+        SELECT AVG(total_bookings)
+        FROM (
+            SELECT pickup_location_id, COUNT(*) AS total_bookings
+            FROM fact_ride_booking
+            GROUP BY pickup_location_id) t
+    )
+    AND
+    COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100 < (
+        SELECT AVG(completion_rate)
+        FROM (
+            SELECT
+                pickup_location_id,
+                COUNT(*) FILTER (WHERE booking_status = 'Completed')::NUMERIC / COUNT(*) * 100 AS completion_rate
+            FROM fact_ride_booking
+            GROUP BY pickup_location_id) t
+    )
+ORDER BY total_bookings DESC;
+
+
+
+
  

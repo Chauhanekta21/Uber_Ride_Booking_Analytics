@@ -103,6 +103,8 @@ FROM(
 SELECT *
 FROM dim_ride_reason;
 
+ALTER TABLE dim_ride_reason
+RENAME TO dim_ride_cancellation_reason;
 
 
 
