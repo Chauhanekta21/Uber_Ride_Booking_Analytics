@@ -44,6 +44,7 @@ select MIN()
 
 
 
+
 -- Step 05.2: Customer-Level Booking Analysis
 --How many unique customers have made bookings?
 SELECT COUNT(customer_id) AS total_unique_customer
@@ -142,5 +143,126 @@ FROM (
     GROUP BY customer_id
 ) AS customer_summary
 GROUP BY customer_type;         
+
+
+
+
+
+
+
+-- Step 05.3: Vehicle Performance
+-- total bookings made for each vehicle type
+SELECT v.vehicle_type, COUNT(f.booking_id) AS total_bookings,
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type;
+
+
+--percentage of bookings for each vehicle type were completed
+SELECT v.vehicle_type, ROUND(COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100, 2) AS completion_rate
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type
+ORDER BY completion_rate DESC;
+
+
+--cancellation rate for each vehicle type
+SELECT v.vehicle_type, ROUND(COUNT(*) FILTER (WHERE f.booking_status IN ('Cancelled by Driver', 'Cancelled by Customer'))::NUMERIC / COUNT(*) * 100, 2) AS cancellation_rate
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type
+ORDER BY cancellation_rate DESC;
+
+
+--average booking value for each vehicle type
+SELECT v.vehicle_type, ROUND(AVG(f.booking_value), 2) AS avg_booking_value
+FROM fact_ride_booking f 
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type        
+ORDER BY avg_booking_value DESC;
+
+
+--average ride distance for each vehicle type
+SELECT v.vehicle_type, ROUND(AVG(f.ride_distance), 2) AS avg_ride_distance
+FROM fact_ride_booking f 
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type        
+ORDER BY avg_ride_distance DESC;
+
+
+--average customer rating for each vehicle type
+SELECT v.vehicle_type, ROUND(AVG(f.ride_distance), 2) AS avg_ride_distance
+FROM fact_ride_booking f 
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type        
+ORDER BY avg_ride_distance DESC;
+
+
+--vehicle generated the highest total booking value
+Select v.vehicle_type, SUM(f.booking_value) AS highest_booking_value
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type
+ORDER BY highest_booking_value DESC
+LIMIT 1;
+
+
+--vehicle has the highest average booking value
+Select v.vehicle_type, ROUND(AVG(f.booking_value), 2) AS highest_avg_booking_value
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type
+ORDER BY highest_avg_booking_value DESC
+LIMIT 1;
+
+
+--vehicles have an above-average completion rate
+SELECT v.vehicle_type, ROUND(COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC/ COUNT(*) * 100,2) AS completion_rate
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type
+HAVING COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100 > (
+        SELECT AVG(completion_rate)
+        FROM (
+            SELECT v2.vehicle_type, COUNT(*) FILTER (WHERE f2.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100 AS completion_rate
+            FROM fact_ride_booking f2
+            JOIN dim_vehicle v2
+            ON f2.vehicle_id = v2.vehicle_id
+            GROUP BY v2.vehicle_type) AS vehicle_completion)
+ORDER BY completion_rate DESC;
+	  
+
+
+-- summary
+SELECT v.vehicle_type, 
+	   COUNT(f.booking_id) AS total_bookings,
+	   ROUND(COUNT(*) FILTER (WHERE f.booking_status = 'Completed')::NUMERIC / COUNT(*) * 100, 2) AS completion_rate,
+	   ROUND(COUNT(*) FILTER (WHERE f.booking_status IN ('Cancelled by Driver', 'Cancelled by Customer'))::NUMERIC / COUNT(*) * 100, 2) AS cancellation_rate,
+	   ROUND(AVG(f.booking_value), 2) AS avg_booking_value,
+	   ROUND(AVG(f.ride_distance), 2) AS avg_ride_distance,
+	   ROUND(AVG(f.customer_rating), 2) AS avg_customer_rating
+FROM fact_ride_booking f
+JOIN dim_vehicle v
+ON f.vehicle_id = v.vehicle_id
+GROUP BY v.vehicle_type;
+
+
+
+
+
+
+
+-- Step 05.4: Booking Cancellation Analysis
+
+
 
 
