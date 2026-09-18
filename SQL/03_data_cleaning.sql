@@ -40,7 +40,8 @@ RENAME COLUMN incomplete_rides_reason TO incomplete_ride_reason;
 
 
 SELECT *
-FROM clean_uber_bookings;
+FROM clean_uber_bookings
+LIMIT 10;
 
 
 
