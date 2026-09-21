@@ -1,7 +1,7 @@
 
 # 📊 Uber Ride Booking Analytics
 
-> **Project Status: In Progress**
+> **Project Status: Completed**
 
 ![Data Model](Images/thumbnail.png)
 
