@@ -1,5 +1,5 @@
 
-# 📊 Uber Ride Booking Analytics & Operations
+# 📊 Uber Ride Booking Analytics
 
 > **Project Status: In Progress**
 
@@ -10,38 +10,46 @@
 
 ## 📈 Project Overview
 
-- This project analyzes Uber ride booking data to uncover actionable business insights related to customer behavior, driver                 performance, revenue, booking trends, cancellations, payment preferences, and operational efficiency.
+- This project analyzes Uber ride booking data from Delhi-NCR for 2024 to understand booking patterns, customer behavior, vehicle performance,       revenue, cancellations, incomplete rides, and location-based demand.
 
-- The project uses PostgreSQL for database design and SQL analysis, followed by Python and Streamlit for visualization and deployment.
+- The project follows a complete data analytics workflow:
+
+  - **Raw Data → PostgreSQL → Data Cleaning → Normalization → SQL Analysis → Power BI Dashboard**
+
+- The goal is to turn raw ride-booking data into clear business insights through SQL analysis and an interactive Power BI dashboard.
+
 
 ---
 
 ## 📈 Objectives
 
-- Analyze booking patterns by month, day, and hour.
-
-- Evaluate driver and customer performance using ratings.
-
-- Identify revenue patterns across vehicle types and locations.
-
-- Analyze ride cancellations and their reasons.
-
-- Examine payment method preferences.
-
-- Measure operational efficiency using pickup and trip time metrics.
-
-- Generate business insights using advanced SQL queries
+- Analyze overall booking and ride performance.
+- Understand customer booking behavior and repeat usage.
+- Compare vehicle performance and ride outcomes.
+- Analyze revenue and ride-fare patterns.
+- Identify major customer and driver cancellation reasons.
+- Analyze incomplete rides and their reasons.
+- Identify high-demand pickup and drop locations.
+- Analyze popular routes.
+- Understand payment method preferences.
+- Evaluate operational metrics such as VTAT and CTAT.
+- Present the findings through an interactive Power BI dashboard.
 
 ---
 
 ## 📈 Tech Stack
 
-- **Database               :**  PostgreSQL
-- **Query Language         :**  SQL
-- **Programming Language   :**  Python
-- **Libraries              :**  Pandas, SQLAlchemy, Plotly, Seaborn, Streamlit
-- **IDE:** VS Code
-- **Version Control        :**  Git & GitHub
+| Tool | Purpose |
+|---|---|
+| **PostgreSQL** | Database storage, cleaning, normalization and analysis |
+| **SQL** | Data inspection and business analysis |
+| **Power BI** | Interactive dashboard and visualization |
+| **Power Query** | Minor dashboard-level data preparation |
+| **DAX** | Measures and calculated fields |
+| **pgAdmin** | PostgreSQL database management |
+| **Git & GitHub** | Version control |
+| **VS Code** | Project development |
+
 
 ---
 
@@ -61,14 +69,17 @@
 
 ### 🔹 Features Included
 
-- Booking Details
-- Customer Information
-- Vehicle Information
-- Ride Information
-- Payment Information
-- Ratings
-- Cancellation Details
-- Operational Metrics
+- Booking details
+- Customer information
+- Vehicle information
+- Location information
+- Ride metrics
+- Payment information
+- Customer and driver ratings
+- Cancellation information
+- Incomplete ride information
+- Operational metrics
+
 
 ### 🔹 Dataset Link: [uber-ride-booking-kaggle-dataset](https://www.kaggle.com/datasets/nidhisharma25/uber-ride-bookings-ncr-2024)
 
@@ -83,23 +94,23 @@ PostgreSQL Database
         ↓
 Raw Data Import
         ↓
-Data Inspection (SQL)
+Data Inspection
         ↓
-Data Cleaning (SQL)
+Data Cleaning
         ↓
-Database Normalization (SQL)
+Database Normalization
         ↓
-ER Diagram (SQL)
+ER Diagram
         ↓
-Normalized Tables (SQL) 
+Normalized Tables
         ↓
-SQL Analysis 
+SQL Business Analysis
         ↓
-Advanced Statistical Analysis & Visualization (Python + SQLAlchemy)
+Power BI Data Connection
         ↓
-Interactive Dashboard (Power BI)
+DAX Measures & Dashboard
         ↓
-Project Deployment
+Interactive 5-Page Dashboard
 ```
 
 ---
@@ -155,11 +166,11 @@ The raw dataset was inspected to understand its structure and assess data qualit
 
 ## 📈 Data Cleaning
 
-- **Created Clean Table:** Created clean_uber_bookings as a duplicate of raw_uber_bookings to preserve the original dataset. All further                             cleaning, transformations, and analysis will be performed using the clean table, while keeping the raw data                               unchanged for reference.
+- **Created Clean Table:** Created clean_uber_bookings as a duplicate of raw_uber_bookings to preserve the original dataset. All further             cleaning, transformations, and analysis will be performed using the clean table, while keeping the raw data unchanged for reference.
 
-- **NULL Handling:** Replaced NULL with 0 in cancelled_rides_by_customer, cancelled_rides_by_driver, and incomplete_rides because NULL indicated the event did not occur.
+- **NULL Handling:** Replaced NULL with 0 in cancelled_rides_by_customer, cancelled_rides_by_driver, and incomplete_rides because NULL indicated     the event did not occur.
 
-- **Column Renaming:** Renamed Cancelled Rides by Customer, Cancelled Rides by Driver, Incomplete Rides, and Incomplete Rides Reason to singular, consistent names because each row represents one ride record.
+- **Column Renaming:** Renamed Cancelled Rides by Customer, Cancelled Rides by Driver, Incomplete Rides, and Incomplete Rides Reason to singular,    consistent names because each row represents one ride record.
 
 ![Data Model](Images/cleaning.png)
 
@@ -194,6 +205,7 @@ The raw dataset contained **150,000 ride records in one wide table**, with repea
 
 🔷 **Key Design Decision:**
 A new `ride_id` was generated as the **Primary Key** because `booking_id` was not unique.
+
 
 🔷 **View Normalized Dataset Files:** [uber-ride-booking-normalized-dataset-files](https://www.kaggle.com/datasets/ektasinghchauhan/uber-ride-bookings-normalized-dataset?select=fact_ride_booking.csv)
 
@@ -283,6 +295,147 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 **Validation:** Confirmed **150,000 ride records**, **150,000 unique `ride_id`s**, and **0 missing mandatory dimension mappings** before applying the FK constraints.
 
+---
+
+## 📈 SQL Business Analysis
+
+- After normalization, SQL was used to analyze the data from a business perspective. The analysis was organized into the following areas:
+
+  - **Overall Booking Performance:** Bookings, ride outcomes, revenue, distance, VTAT & CTAT.
+  - **Customer Analysis:** Customer activity, repeat usage, booking value & cancellations.
+  - **Vehicle Performance:** Bookings, ride outcomes, revenue & distance by vehicle.
+  - **Cancellation Analysis:** Customer/driver cancellations, reasons & patterns.
+  - **Location & Route Analysis:** Top locations, routes, bookings, revenue & failed rides.
+  - **Incomplete Ride Analysis:** Incomplete ride reasons, vehicles & locations.
+  - **Rating & Service Quality:** Customer/driver ratings and vehicle-level ratings.
+  - **Payment Analysis:** Payment method distribution and completed-ride preferences.
+
+![Data Model](Images/analysis1.png)
+
+<hr>
+
+![Data Model](Images/analysis2.png)
+
+<hr>
+
+![Data Model](Images/analysis3.png)
+
+---
+
+## 📈 Power BI Dashboard
+
+- The normalized PostgreSQL database was connected to Power BI to build an interactive dashboard. The final dashboard contains 5 pages.
+
+### 🔷 Overview
+
+- Provides a high-level view of bookings, ride outcomes, revenue, fares, and vehicle performance.
+
+![Data Model](Images/overview.png)
+
+<hr>
+
+### 🔷 Customer Analysis
+
+- Analyzes customer behavior, repeat usage, spending, ratings, payment preferences, and ride outcomes.
+
+![Data Model](Images/customer.png)
+
+<hr>
+
+### 🔷 Vehicle & Service Performance
+
+- Analyzes vehicle-wise ride outcomes, operational times, distance, and service performance.
+
+![Data Model](Images/vehicle.png)
+
+<hr>
+
+### 🔷 Location & Route Analysis
+
+-
+
+![Data Model](Images/location.png)
+
+<hr>
+
+5. Cancellation & Incomplete Analysis
+
+- 
+
+![Data Model](Images/cancel.png)
+
+---
+
+
+## 📈 Key Business Findings
+
+- The dataset contains 150K ride bookings across Delhi-NCR during 2024.
+- Around 93K rides were completed, while a significant number of bookings ended through cancellations, incomplete rides or no-driver-found           outcomes.
+- One-time customers form the vast majority of customers, while repeat customers represent a much smaller group.
+- Vehicle types show different booking volumes and ride outcomes.
+- Certain pickup locations consistently generate higher booking and failed-ride activity.
+- Customer and driver cancellations have different reasons and patterns.
+- Ride distance and average fare can be explored together to understand fare behavior.
+- Payment preferences vary across completed bookings.
+- Operational metrics such as VTAT and CTAT provide additional insight into the ride experience.
+
+---
+
+## 📈 Project Structure
+
+Uber_Ride_Booking_Analytics/
+│
+├── Dataset/
+│   ├── Normalized Dataset/
+│   │   ├── dim_customer.csv
+│   │   ├── dim_location.csv
+│   │   ├── dim_ride_reason.csv
+│   │   ├── dim_vehicle.csv
+│   │   └── fact_ride_booking.csv
+│   │
+│   └── Raw/
+│       └── uber_ride_data.csv
+│
+├── Images/ 
+│   ├── 15 images
+│
+├── SQL/
+│   ├── 01_database_setup.sql
+│   ├── 02_data_inspection.sql
+│   ├── 03_data_cleaning.sql
+│   ├── 04_normalization.sql
+│   └── 05_uber_ride_booking_analysis.sql
+│
+├── PowerBI/
+│   └── uber_ride_analytics.pbix
+│
+└── README.md
+
+---
+
+## 📈 Skills Demonstrated
+
+- SQL & PostgreSQL
+- Data Cleaning & Validation
+- Database Normalization & ER Modeling
+- Business & Exploratory Analysis
+- DAX & Data Modeling
+- Power BI Dashboard Development
+- KPI & Metric Design
+- Data Visualization & Storytelling
+- Business Problem Solving
+
+---
+
+## Author
+
+- Ekta Singh Chauhan
+
+- Data Analytics | SQL | PostgreSQL | Power BI 
+
+- This project was created as part of my data analytics portfolio to practice database design, SQL analysis, data modeling and dashboard             development.
+
+---
 
 ## Dataset Disclaimer
 
