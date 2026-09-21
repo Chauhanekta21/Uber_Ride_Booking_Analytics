@@ -21,6 +21,20 @@
 
 ---
 
+## 📈 View Project
+
+### 🔹 Power BI Dashboard
+
+- Explore the complete **5-page interactive Power BI report** covering **Overview** (booking performance), **Customer Behavior**, **Vehicle & Service Performance**, **Location & Route Analysis**, and **Cancellation & Incomplete Rides Analysis**.
+
+- **Power BI Dashboard Link:** [uber-ride-booking-analytics-dashboard](https://github.com/Chauhanekta21/Uber_Ride_Booking_Analytics/tree/main/PowerBI_Dashboard)
+
+- **Dashboard Preview:**  The Overview page is shown below. Screenshots of the remaining four pages are available in the **Power BI Dashboard**                              section.
+
+![Data Model](Images/overview.png)
+
+---
+
 ## 📈 Objectives
 
 - Analyze overall booking and ride performance.
