@@ -383,6 +383,7 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 ## 📈 Project Structure
 
+```text
 Uber_Ride_Booking_Analytics/
 │
 ├── Dataset/
@@ -424,6 +425,7 @@ Uber_Ride_Booking_Analytics/
 - KPI & Metric Design
 - Data Visualization & Storytelling
 - Business Problem Solving
+```
 
 ---
 
