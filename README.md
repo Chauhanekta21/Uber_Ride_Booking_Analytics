@@ -352,15 +352,15 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 ### 🔷 Location & Route Analysis
 
--
+- Analyzes booking demand across locations and routes, along with route bookings and revenue.
 
 ![Data Model](Images/location.png)
 
 <hr>
 
-5. Cancellation & Incomplete Analysis
+### 🔷 Cancellation & Incomplete Analysis
 
-- 
+- Analyzes cancellation and incomplete ride reasons, failed rides, and locations with high failed-ride activity.
 
 ![Data Model](Images/cancel.png)
 
