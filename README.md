@@ -369,15 +369,41 @@ The ER diagram shows how the fact and dimension tables are connected through **P
 
 ## 📈 Key Business Findings
 
-- The dataset contains 150K ride bookings across Delhi-NCR during 2024.
-- Around 93K rides were completed, while a significant number of bookings ended through cancellations, incomplete rides or no-driver-found           outcomes.
-- One-time customers form the vast majority of customers, while repeat customers represent a much smaller group.
-- Vehicle types show different booking volumes and ride outcomes.
-- Certain pickup locations consistently generate higher booking and failed-ride activity.
-- Customer and driver cancellations have different reasons and patterns.
-- Ride distance and average fare can be explored together to understand fare behavior.
-- Payment preferences vary across completed bookings.
-- Operational metrics such as VTAT and CTAT provide additional insight into the ride experience.
+### 🔷 Overview
+
+- 150K bookings generated approximately ₹51.8M revenue, with 93K completed rides (62%).
+- 38K rides were cancelled (25%), while 6% were incomplete and 7% had no driver found.
+- Monthly demand remained relatively stable, ranging from approximately 11.8K to 12.9K bookings.
+- Auto recorded the highest booking volume at approximately 37K bookings, while average ride fare was ₹508.3.
+
+
+### 🔷 Customer Analysis
+
+- The customer base was overwhelmingly one-time customers (99.19%), with repeat customers accounting for only 0.81%.
+- One-time customers generated approximately ₹51.0M, compared with only ₹0.8M from repeat customers.
+- UPI was the most-used payment method (45.01%), followed by Cash at 24.87%.
+- The average customer rating was 4.4, while the average spend per customer was ₹348.5.
+
+### 🔷 Vehicle & Service Performance
+
+- Auto had the highest completed rides with approximately 23.2K, followed by Go Mini (18.5K) and Go Sedan (16.7K).
+- Driver cancellations were substantially higher than customer cancellations, with approximately 27K driver cancellations across the dataset.
+- Auto alone recorded 6,643 driver-cancelled rides, around 25% of all driver cancellations.
+- Average VTAT was 8.5, while average CTAT was 29.1, with an average ride distance of 24.6 km.
+
+### 🔷 Location & Route Analysis
+
+- The dataset covered 176 locations and approximately 30.6K unique routes, with average demand of 852 bookings per pickup location.
+- The busiest pickup locations had around 920–949 bookings, showing relatively similar demand among the top locations.
+- DLF City Court → Bhiwadi was the top route with 17 bookings and ₹6.0K revenue.
+- Routes with similar booking volumes generated noticeably different revenue; for example, DLF City Court → Bhiwadi generated ₹6.0K, compared with   ₹1.7K for Jor Bagh → Rohini East.
+
+### 🔷 Cancellation & Incomplete Analysis
+
+- Driver cancellations (≈27K) were about 2.6× higher than customer cancellations (≈10.5K).
+- The largest customer cancellation reasons were Wrong Address and Change of Plans, at approximately 2.4K rides each.
+- Driver cancellation reasons were much larger individually, with the top reasons accounting for approximately 6.7–6.8K rides each.
+- Pragati Maidan had the highest failed-ride activity with 382 failed rides, followed by Saket (374) and Vinobapuri (373).
 
 ---
 
